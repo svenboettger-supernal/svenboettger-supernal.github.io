@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<style>body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>Heritage 2027 Order Form</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=Public+Sans:wght@400;500;600&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<style>
+/* Layout: one column order form. Header, the form lines with prices, a totals block, the Heritage AI app checkbook, the order forms it replaces. */
+:root{
+  --bg:#f5f6f3; --paper:#fdfdfb; --ink:#161d19; --muted:#5f6a64; --line:#d5dad4; --line-strong:#b6bfb8;
+  --accent:#1e4b3a; --accent-mid:#7fae95; --accent-ink:#f3f7f4; --accent-soft:#e2ece6;
+  --warn:#9a6b12; --warn-soft:#f6ecd3; --bad:#9b3b2e; --good:#1e6b42;
+  --display:"Source Serif 4",Georgia,serif; --body:"Public Sans",system-ui,-apple-system,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#131816; --paper:#1a211d; --ink:#edf1ee; --muted:#9aa69f; --line:#2d3732; --line-strong:#43504a;
+  --accent:#8fcaa9; --accent-mid:#4d7f66; --accent-ink:#10201a; --accent-soft:#1f3329;
+  --warn:#e2b45a; --warn-soft:#3a2f14; --bad:#e58a7c; --good:#7fd4a3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#131816; --paper:#1a211d; --ink:#edf1ee; --muted:#9aa69f; --line:#2d3732; --line-strong:#43504a;
+  --accent:#8fcaa9; --accent-mid:#4d7f66; --accent-ink:#10201a; --accent-soft:#1f3329;
+  --warn:#e2b45a; --warn-soft:#3a2f14; --bad:#e58a7c; --good:#7fd4a3; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;padding-inline:20px;padding-block:24px 56px}
+main{max-width:980px;margin:0 auto;display:grid;gap:28px}
+h1{font-family:var(--display);font-weight:500;font-size:clamp(28px,4.2vw,40px);letter-spacing:-.01em;margin:0;text-wrap:balance;line-height:1.1}
+h2{font-family:var(--display);font-weight:500;font-size:23px;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit}
+button{cursor:pointer}
+:where(button,summary):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* header */
+header{display:flex;flex-wrap:wrap;gap:14px 24px;align-items:flex-start;justify-content:space-between}
+header .lead{display:grid;gap:8px;max-width:620px;min-width:0}
+header .lead p{font-size:16px}
+
+
+/* the form */
+.form{background:var(--paper);border:1px solid var(--line);display:grid}
+.form-head{display:grid;grid-template-columns:28px 1fr auto;gap:14px;align-items:end;padding:12px 18px;border-bottom:1px solid var(--line-strong);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.form-head .r{text-align:right}
+.line{display:grid;grid-template-columns:28px 1fr auto;gap:14px;align-items:start;padding:14px 18px;border-bottom:1px solid var(--line);position:relative}
+.line:last-of-type{border-bottom:0}
+.line.sub{padding-left:46px;background:color-mix(in srgb,var(--accent-soft) 45%,var(--paper))}
+.line.sub::before{content:"";position:absolute;left:26px;top:0;bottom:0;width:2px;background:var(--accent-soft)}
+.box{width:22px;height:22px;border:1.5px solid var(--line-strong);border-radius:4px;background:var(--bg);display:grid;place-items:center;padding:0;margin-top:2px}
+.box svg{width:13px;height:13px;display:block;opacity:0}
+.line.on .box{background:var(--accent);border-color:var(--accent)}
+.line.on .box svg{opacity:1;color:var(--accent-ink)}
+.box:disabled{cursor:default}
+.line.locked .box,.line.locked.on .box{background:var(--line-strong);border-color:var(--line-strong)}
+.line.locked.on .box svg{color:var(--paper)}
+.what{min-width:0;display:grid;gap:3px}
+.what b{font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ibtn{width:18px;height:18px;border-radius:50%;border:0;background:var(--accent-soft);color:var(--accent);cursor:pointer;padding:0;display:inline-grid;place-items:center;flex:none}
+.ibtn svg{width:11px;height:11px;display:block}
+.ibtn:hover,.ibtn[aria-expanded="true"]{background:var(--accent);color:var(--accent-ink)}
+.ibwrap{position:relative;display:inline-flex;align-items:center}
+.pop.notepop{font-size:14px;line-height:1.4;left:calc(100% + 8px);right:auto;top:50%;transform:translateY(-50%);width:360px;max-width:min(360px,55vw);min-width:0;font-weight:400}
+@media (max-width:640px){.pop.notepop{left:0;top:calc(100% + 6px);transform:none;max-width:80vw}}
+.what small{color:var(--muted);font-size:14px}
+.what .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.tag,.info{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap;box-sizing:border-box}
+.tag svg,.info svg{width:12px;height:12px;flex:none;display:block}
+.col1{width:136px} .col2{width:154px} .col3{width:140px}
+.tag{background:var(--accent-soft);color:var(--accent)}
+.tag.lock{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.info{border:1px solid var(--accent);background:transparent;color:var(--accent);cursor:pointer;font-family:inherit}
+.info:hover,.info[aria-expanded="true"]{background:var(--accent);color:var(--accent-ink)}
+@media (max-width:640px){.tag,.info{width:auto!important}}
+.right{text-align:right;display:grid;gap:3px;justify-items:end;min-width:120px}
+.price{font-weight:600;font-size:17px;font-variant-numeric:tabular-nums}
+.price small{display:block;font-weight:400;color:var(--muted);font-size:13px}
+
+/* popover */
+.pop{position:absolute;z-index:6;left:46px;right:18px;top:calc(100% - 4px);background:var(--paper);border:1px solid var(--line-strong);box-shadow:0 10px 28px rgba(0,0,0,.14);padding:12px 14px;max-width:460px;font-size:14px;display:grid;gap:8px}
+.pop h4{margin:0;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.pop table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+.pop td{padding:3px 0 3px 10px;border-bottom:1px solid var(--line)}
+.pop td:first-child{padding-left:0}
+.pop tr.hd td{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.pop tr:last-child td{border-bottom:0;font-weight:600}
+.pop td.r{text-align:right}
+.pop .note{font-size:13px;color:var(--muted)}
+
+/* totals */
+.totals{display:grid;border-top:2px solid var(--ink);background:var(--accent-soft)}
+.totals>div{padding:16px 18px;display:grid;gap:2px;justify-items:end;text-align:right}
+.printbar{flex:none;margin-top:4px;display:flex;gap:8px;align-items:center}
+.printbar button{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:4px;font-weight:500;font-size:14px}
+.printbar button:hover{filter:brightness(1.08)}
+.printbar button:disabled{opacity:.6;cursor:wait}
+.printbar button svg{width:14px;height:14px;display:block}
+.totals .k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.totals .v{font-family:var(--display);font-size:28px;font-weight:500;letter-spacing:-.01em;font-variant-numeric:tabular-nums;line-height:1.1}
+.totals .s{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* checkbook */
+.book{background:var(--paper);border:1px solid var(--line);display:grid}
+.book-head{padding:16px 18px 12px;display:grid;gap:4px;border-bottom:1px solid var(--line)}
+.book-head p{color:var(--muted)}
+.chartwrap{padding:14px 18px 0;overflow-x:auto}
+.chart{display:block;width:100%;min-width:620px;height:auto;font-family:var(--body);font-variant-numeric:tabular-nums}
+.chart .lbl{font-size:11px;fill:var(--muted)}
+.chart .val{font-size:12px;fill:var(--ink);font-weight:600}
+.chart .val.inv{fill:var(--accent-ink)}
+.chart .left{font-size:12px;fill:var(--muted)}
+.chart .left.hot{fill:var(--warn);font-weight:600}
+.chart .axis{stroke:var(--line-strong);stroke-width:1}
+.chart .cap{font-size:11px;fill:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;padding:8px 18px 14px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.c1{background:var(--accent)} .c2{background:var(--accent-mid)} .c4{background:var(--warn)} .c5{background:transparent;border:1.5px dashed var(--muted)}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.facts>div{padding:12px 18px;border-right:1px solid var(--line);display:grid;gap:2px;align-content:start}
+.facts>div:last-child{border-right:0}
+.facts .k{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.facts .v{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
+.facts .s{font-size:13px;color:var(--muted)}
+.sumrow{display:flex;justify-content:space-between;gap:12px;padding:10px 18px 10px 44px;border-top:1px solid var(--line-strong);background:var(--accent-soft);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sumrow .n{font-variant-numeric:tabular-nums;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink)}
+details.grp{border-top:1px solid var(--line)}
+details.grp summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:12px;padding:11px 18px;font-weight:500}
+details.grp summary::-webkit-details-marker{display:none}
+details.grp summary::before{content:"▸";display:inline-block;width:14px;color:var(--muted);transition:transform .15s}
+details.grp[open] summary::before{transform:rotate(90deg)}
+@media (prefers-reduced-motion:reduce){details.grp summary::before{transition:none}}
+details.grp summary .l{flex:1;display:flex;gap:10px;align-items:center;min-width:0}
+details.grp summary .n{color:var(--muted);font-variant-numeric:tabular-nums;font-size:14px}
+details.grp ul{list-style:none;margin:0;padding:0 18px 12px 42px;display:grid;gap:4px;font-size:14px}
+details.grp li{display:flex;gap:10px;justify-content:space-between}
+details.grp li span:first-child{min-width:0}
+details.grp li .pt{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margin-right:6px}
+
+/* order forms table */
+.tablewrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
+table.of{border-collapse:collapse;width:100%;min-width:640px}
+table.of th,table.of td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}
+table.of th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+table.of tr:last-child td{border-bottom:0}
+table.of td:first-child{white-space:nowrap;font-weight:600}
+.chip{display:inline-block;font-size:12px;padding:2px 8px;border-radius:3px;background:var(--accent-soft);color:var(--accent);font-weight:500;white-space:nowrap}
+.chip.wait{background:var(--warn-soft);color:var(--warn)}
+.chip.none{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+
+@media print{
+  body{background:#fff;padding:0}
+  .line.off,.book,.printbar,.tablewrap,.pop{display:none!important}
+  .form{border:0}
+}
+@media (max-width:640px){
+  .line,.form-head{grid-template-columns:24px 1fr}
+  .right{grid-column:2;justify-items:start;text-align:left}
+  .form-head .r{display:none}
+  .facts{grid-template-columns:1fr}
+  .facts>div{border-right:0;border-bottom:1px solid var(--line)}
+  .pop{left:16px}
+  h1{font-size:28px}
+}
+</style>
+
+<main>
+  <header>
+    <div class="lead">
+      <h1>Heritage x Supernal 2027</h1>
+      <p class="muted">Select the services Heritage requires from January 2027.</p>
+    </div>
+    <div class="printbar">
+      <button type="button" id="btn-print"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6V2h8v4M4 12H2.5A1.5 1.5 0 0 1 1 10.5v-3A1.5 1.5 0 0 1 2.5 6h11A1.5 1.5 0 0 1 15 7.5v3a1.5 1.5 0 0 1-1.5 1.5H12M4 9.5h8V14H4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Print proposal</button>
+    </div>
+  </header>
+
+  <section class="form" aria-label="Order form">
+    <div class="form-head"><span></span><span>Line</span><span class="r">Fee per month</span></div>
+    <div id="lines"></div>
+    <div class="totals">
+      <div><span class="v num" id="t-month">$0</span><span class="s num" id="t-year"></span><span class="s num" id="t-people"></span></div>
+    </div>
+  </section>
+
+  <section class="book" aria-label="Heritage AI app checkbook">
+    <div class="book-head">
+      <h2>Heritage AI app: what was ordered, what is built</h2>
+      <p>The signed order form covers <span id="b-items"></span> deliverables at <span id="b-pts"></span> points. Heritage added <span id="b-added"></span> items on top and pulled deliverables forward, so the build threshold lands in January 2027 and the form converts to maintenance.</p>
+    </div>
+    <div class="chartwrap"><svg class="chart" id="chart" role="img" aria-label="Points delivered per month and points left to build"></svg></div>
+    <div class="legend" id="legend"></div>
+    <div class="facts">
+      <div><span class="k">Build threshold</span><span class="v">$840,000</span><span class="s">Reached January 2027</span></div>
+      <div><span class="k">From February 2027</span><span class="v">$425,000 per year</span><span class="s">Maintenance only, no new deliverables</span></div>
+      <div><span class="k">Not covered by maintenance</span><span class="v" id="b-left"></span><span class="s" id="b-left-s"></span></div>
+    </div>
+    <div id="groups"></div>
+  </section>
+
+  <section style="display:grid;gap:12px">
+    <h2>Order forms this replaces</h2>
+    <div class="tablewrap">
+      <table class="of">
+        <thead><tr><th>Form</th><th>Status today</th><th>From January 2027</th></tr></thead>
+        <tbody id="of-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<script>
+(function(){
+  /* ---------- data ---------- */
+  const ROLES={
+    jens:"Lead engineer", engineers:"Engineers", roger:"Security and infrastructure", ellen:"UI/UX designer",
+    jon:"Video and brand lead", michelle:"Video production", majo:"Websites and content", aidan:"Copy and motion graphics",
+    ryan:"Chief Revenue Officer", stu:"Account manager", sven:"AI strategy and product lead", scott:"Chief Executive Officer"
+  };
+  const FTE={"maintenance":{"jens":0.2,"engineers":1,"roger":0.01,"ellen":0.01,"stu":0.05,"sven":0.3},"development":{"jens":0.65,"engineers":2.5,"roger":0.02,"ellen":0.05,"sven":0.4},"helpdesk":{"jens":0.25,"engineers":0.5,"roger":0.01,"ellen":0.01,"sven":0.25},"foreman":{"jens":0.25,"engineers":0.5,"roger":0.01,"ellen":0.01,"sven":0.25},"growth":{"stu":0.2,"sven":0.2,"jon":0.1,"michelle":0.1,"majo":0.2,"aidan":0.05,"ryan":0.3},"dpe":{"jens":0.05,"engineers":0.1,"roger":0.2}};
+  /* fee: monthly fee. yearly: the figure on the order form where one exists, otherwise fee × 12. */
+  const LINES=[
+    {id:"maintenance",name:"Heritage AI app maintenance, with security",sub:"Uptime, bug fixes, hosting, security patching. What the signed order form converts to.",locked:true,def:true,fee:35417,yearly:425000,status:"Signed"},
+    {id:"dpe",name:"Dedicated Private Environment",sub:"Heritage's own cloud project with private AI. Billed under its own order form.",locked:true,def:true,fee:7790,yearly:93485,status:"Out for signature",parent:"maintenance"},
+    {id:"development",name:"Heritage AI additional feature requests",sub:"Continuous roadmap build against quarterly milestones. New features for advisors and clients.",def:false,fee:60000,status:"New",note:"At $60,000 per month this is the same bucket of energy as the Advanced tier of the signed order form: about three new features a month, on top of maintenance."},
+    {id:"helpdesk",name:"Help Desk, AI Employee",sub:"AI-first support for Heritage users by phone, email and chat, 24/7, with human escalation.",def:false,fee:7000,status:"Order form sent"},
+    {id:"foreman",name:"Foreman, AI project manager",sub:"Runs the engagement workflow and chases missing client documents for Heritage Strategies.",def:false,fee:7000,status:"Order form sent"},
+    {id:"growth",name:"Sales and marketing advisory, Growth Pod",sub:"Both websites, content, brand videos and go-to-market advice. Or hire this in-house.",def:false,fee:3042,yearly:36500,status:"Order forms signed"}
+  ];
+  const ITEMS=[{"n":"1","t":"Flow Diagram Automation: new creation process (as well as record duplication for flow diagram)","c":2,"p":2,"s":"Done","m":"2026-04","k":"c","g":false},{"n":"2","t":"Estate Distribution Chart: auto-creation from book data","c":1,"p":1,"s":"In Rework","m":"2026-04","k":"c","g":false},{"n":"3","t":"Insurance Sheet: formatting flexibility & survivorship support (incl. #47)","c":1,"p":4,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"4","t":"Vault document rotation: correct sideways / upside-down PDFs","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"5","t":"Large Document Handling: AI retrieval & readability improvements","c":4,"p":4,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"6","t":"Record Deduplication: platform updates existing entries, no duplicates (all sheets except flow chart)","c":1,"p":1,"s":"Done","m":"2026-04","k":"c","g":false},{"n":"7","t":"Legal-Landscape PDF page on book print","c":2,"p":2,"s":"In Review","m":"2026-09","k":"c","g":false},{"n":"8","t":"Insurance & Asset Sheet AI auto-notes (Comdex, face amounts, owner/beneficiary, conversion dates, cash value)","c":1,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"9","t":"Presentation highlight & marker feature for section review","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"10","t":"Slideshow transition mode: reveal one line item at a time","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"11","t":"Business document build-out: LLC Agreement Summary template","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"12","t":"Vault File Auto-Labelling: correct labelling on upload (part 1 completed)","c":4,"p":2,"s":"Done","m":"2026-05","k":"c","g":false},{"n":"12","t":"Vault File Auto-Labelling: correct labelling on upload (part 2)","c":null,"p":2,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"13","t":"Medical section: auto-detect children under 18","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"14","t":"Engagement end date / client status category","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"15","t":"Alphabetical sorting in eval document selection (cross-page)","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"16","t":"Cross-page search in eval document selection","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"17","t":"DOB input for insurance calculations (datasheet \u2192 manual fallback)","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"18","t":"Sheet-level status indicators","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"19","t":"Per-user favourites and bookmarks on clients","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"20","t":"API Layer: endpoints, auth, rate limiting & documentation","c":4,"p":4,"s":"Done","m":"2026-07","k":"c","g":false},{"n":"21","t":"Multi-Tenant Architecture: DB schema, RBAC & firm isolation","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"22","t":"UX Research & Design: Part 1 \u2014 interviews, personas & journey mapping","c":4,"p":2,"s":"Done","m":"2026-07","k":"c","g":false},{"n":"22","t":"UX Research & Design: Part 2 \u2014 wireframes & usability testing","c":null,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"23","t":"Document Management: inventory, labelling & storage","c":2,"p":2,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"24","t":"Document Management: versioning, change detection & auto re-eval","c":2,"p":2,"s":"In Progress","m":"2026-09","k":"c","g":false},{"n":"25","t":"Evaluation Engine: question set builder & templates","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"26","t":"Evaluation Engine: runner, results queue & QA dashboard","c":4,"p":4,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"27","t":"Book Generation: engine & structured data collection","c":2,"p":2,"s":"In Review","m":"2026-10","k":"c","g":false},{"n":"28","t":"Book Generation: year-over-year analysis & bulk reports (EOY 2027)","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"29","t":"Flow Diagram & Estate Distribution: orchestration, record matching & tax","c":4,"p":4,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"30","t":"Document Viewer: source PDF with bounding-box highlighting","c":2,"p":2,"s":"Done","m":"2026-09","k":"c","g":false},{"n":"31","t":"Document Viewer: click-through navigation & mobile-responsive viewing","c":2,"p":2,"s":"Done","m":"2026-10","k":"c","g":false},{"n":"32","t":"LLC Manager: batch pipeline, entity extraction & summary UI","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"33","t":"Notifications: automated alerts, missing documents & renewal reminders","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"34","t":"Notifications: customer engagement analytics for firms","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"35","t":"Secure Book User access to Heritage AI App (client-facing)","c":4,"p":4,"s":"In Review","m":"2026-08","k":"c","g":false},{"n":"36","t":"Version Control: history, draft/published states & domain control","c":4,"p":4,"s":"In Rework","m":"2026-07","k":"c","g":false},{"n":"37","t":"Version Control: granular user-level visibility controls","c":2,"p":2,"s":"In Rework","m":"2026-07","k":"c","g":false},{"n":"38","t":"Admin: firm licensing & billing management","c":2,"p":2,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"39","t":"Admin: usage analytics, reporting & accuracy dashboard","c":2,"p":2,"s":"In Progress","m":"2026-06","k":"c","g":false},{"n":"40","t":"Admin: support ticket system & revenue reporting","c":2,"p":2,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"41","t":"Salesforce Integration: bidirectional sync, API layer & Ridgeback compat (low prio until customers ask for it)","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"42","t":"Pilot Programme: firm onboarding, success tracking & rollout prep","c":2,"p":4,"s":"In Progress","m":"2026-09","k":"c","g":false},{"n":"43","t":"AI Intelligence \u2014 Natural language search across all customer data","c":2,"p":2,"s":"In Review","m":"2026-06","k":"c","g":false},{"n":"44","t":"AI Intelligence: insight cards & expiring document alert system","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"45","t":"Client Data Room: document upload without book impact","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"46","t":"Insurance: Premium-Paid-to-Year backend calculation","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"47","t":"Survivorship policy support (merged into #3)","c":2,"p":0,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"48","t":"Auto-convert uploaded files to PDF","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"49","t":"Automated pipeline for ingesting Heritage Books PDFs into the vault, eliminating manual processing","c":null,"p":2,"s":"Done","m":"2026-05","k":"a","g":false},{"n":"50","t":"Authentication emails (signup, password reset, etc.) with Heritage branding","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"51","t":"Automated Hand-Off Book Creation","c":null,"p":1,"s":"In Progress","m":"2026-09","k":"a","g":false},{"n":"53","t":"Disclosure integration: login page, monthly click-to-agree, PDF export and consent history","c":null,"p":1,"s":"Done","m":"2026-08","k":"a","g":false},{"n":"54","t":"Dummy Data Demo Heritage Vault","c":null,"p":2,"s":"Planned","m":"2026-10","k":"a","g":false},{"n":"55","t":"In-app LLM chat: ChatGPT-style interface with model picker inside Heritage Vault","c":null,"p":4,"s":"In Review","m":"2026-09","k":"a","g":false},{"n":"57","t":"Partner API: partner firms pull book data into their own systems (low prio until customers ask for it) [6 Points]","c":null,"p":8,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"58","t":"Sub-Assets [not confirmed]","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"59","t":"Sales and Planning Recommendations","c":null,"p":4,"s":"In Review","m":"2026-10","k":"a","g":false},{"n":"60","t":"Platform & PDF Branding Whitelabel","c":null,"p":2,"s":"Planned","m":"2026-10","k":"a","g":false},{"n":"61","t":"Sibling asset sharing: copy assets across sibling profiles for family clients","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"62","t":"Spell check across all sheets","c":null,"p":null,"s":"Done","m":"2026-09","k":"a","g":true},{"n":"63","t":"Asset Sheet Improvements [not confirmed]","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"64","t":"Change attribution: cross-sheet visibility, comments and owner notification","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"65","t":"UI and UX research with Heritage's own clients","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"66","t":"Utility Patents","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"67","t":"Mobile App on phone (ios or android)","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"68","t":"Children's doctors on the data sheet","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"69","t":"Settings page to improve UX","c":null,"p":null,"s":"Done","m":"2026-09","k":"a","g":true},{"n":"70","t":"Client Intake Questions Project","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"71","t":"Integrations to key industry partners (one by one)","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"72","t":"Source document indicator on sheet cells, and a lasting highlight when you jump to a source","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"73","t":"Tell clients which uploaded documents the AI did not use","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false}];
+  const OFS=[
+    ["OF-001 Heritage AI app build","Signed. Build threshold reached January 2027.","Converts to maintenance, line 1. Additional feature requests continue as line 3."],
+    ["OF-002 Dedicated Private Environment","Version 10 with Heritage for signature.","Stays separate at its own fee, line 2."],
+    ["OF-003 Brand videos","Signed. Shoot day 3 November.","Runs to completion on its own terms."],
+    ["OF-004 Websites and content","Signed. Both sites in build.","Folds into the Growth Pod if ticked, otherwise continues."],
+    ["OF-005 Foreman","Version 2 with Heritage since 18 September.","Becomes line 5 of this form."],
+    ["OF-006 Help Desk","Scoped, not yet confirmed by Heritage.","Becomes line 4 of this form."],
+    ["OF-007 New features, phase 3","Never issued.","Covered by line 3."]
+  ];
+
+  /* ---------- state ---------- */
+  const $=id=>document.getElementById(id);
+  const money=n=>"$"+Math.round(n).toLocaleString("en-US");
+  let sel={}, TOT={month:0,year:0,people:0};
+  for(const l of LINES) sel[l.id]=l.def;
+  function load(){
+    try{ const s=JSON.parse(localStorage.getItem("hof-state-v4")||"null"); if(s&&s.sel) for(const l of LINES) if(!l.locked&&typeof s.sel[l.id]==="boolean") sel[l.id]=s.sel[l.id]; }catch(_){}
+    const h=(location.hash||"").replace("#","");
+    if(h){ const on=new Set(h.split("-")); const known=LINES.filter(l=>!l.locked).map(l=>l.id); if(on.has("none")||known.some(k=>on.has(k))){ for(const k of known) sel[k]=on.has(k); } }
+  }
+  function persist(){
+    try{ localStorage.setItem("hof-state-v4",JSON.stringify({sel})); }catch(_){}
+    const on=LINES.filter(l=>!l.locked&&sel[l.id]).map(l=>l.id);
+    const h="#"+(on.length?on.join("-"):"none");
+    if(location.hash!==h){ try{ history.replaceState(null,"",h); }catch(_){} }
+  }
+
+
+  const fteOf=id=>Object.values(FTE[id]||{}).reduce((a,b)=>a+b,0);
+
+  /* ---------- build ---------- */
+  const CHECK='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  function buildLines(){
+    const host=$("lines"); host.innerHTML="";
+    for(const l of LINES){
+      const row=document.createElement("div"); row.className="line"+(l.locked?" locked":""); row.id="line-"+l.id;
+      const box=document.createElement("button"); box.type="button"; box.className="box"; box.innerHTML=CHECK; box.setAttribute("aria-label",(l.locked?"Included: ":"Include ")+l.name); box.disabled=!!l.locked;
+      box.addEventListener("click",()=>{ sel[l.id]=!sel[l.id]; paint(); persist(); track("select",{line:l.id,on:sel[l.id]}); });
+      const what=document.createElement("div"); what.className="what";
+      const b=document.createElement("b"); b.textContent=l.name;
+      if(l.note){ const ib=document.createElement("button"); ib.type="button"; ib.className="ibtn"; ib.id="note-"+l.id; ib.setAttribute("aria-label","About "+l.name); ib.setAttribute("aria-expanded","false"); ib.innerHTML='<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="2.6" r="1.1" fill="currentColor"/><rect x="5.1" y="4.8" width="1.8" height="5" rx=".9" fill="currentColor"/></svg>';
+        const np=document.createElement("div"); np.className="pop notepop"; np.hidden=true; np.id="notepop-"+l.id;
+        ib.addEventListener("click",ev=>{ ev.stopPropagation(); const open=np.hidden; closePops(); if(open){ np.innerHTML=""; const d=document.createElement("div"); d.textContent=l.note; np.appendChild(d); np.hidden=false; ib.setAttribute("aria-expanded","true"); } });
+        np.addEventListener("click",ev=>ev.stopPropagation()); const wrap=document.createElement("span"); wrap.className="ibwrap"; wrap.append(ib,np); b.appendChild(wrap); }
+      const s=document.createElement("small"); s.textContent=l.sub;
+      const tags=document.createElement("div"); tags.className="tags";
+      const I_LOCK='<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+      const I_OPEN='<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
+      const I_DOC='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 1.5h5l3 3v10H4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M6 8h4M6 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+      const I_TEAM='<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="6" cy="5" r="2.3" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="11.5" cy="6" r="1.8" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M1.8 13.5c.4-2.6 2-4 4.2-4s3.8 1.4 4.2 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10.6 9.6c1.9.1 3 1.3 3.4 3.3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>';
+      const pill=(cls,icon,text)=>{ const s=document.createElement("span"); s.className=cls; s.innerHTML=icon; s.appendChild(document.createTextNode(text)); return s; };
+      tags.appendChild(pill("tag lock col1",l.locked?I_LOCK:I_OPEN,l.locked?"Always included":"Optional"));
+      tags.appendChild(pill("tag col2",I_DOC,l.status));
+      const info=document.createElement("button"); info.type="button"; info.className="info col3"; info.innerHTML=I_TEAM; info.appendChild(document.createTextNode("Who works on it")); info.setAttribute("aria-expanded","false"); info.id="info-"+l.id;
+      const pop=document.createElement("div"); pop.className="pop"; pop.hidden=true; pop.id="pop-"+l.id;
+      info.addEventListener("click",ev=>{ ev.stopPropagation(); const open=pop.hidden; closePops(); if(open){ pop.hidden=false; info.setAttribute("aria-expanded","true"); } });
+      pop.addEventListener("click",ev=>ev.stopPropagation());
+      tags.appendChild(info);
+      what.append(b,s,tags);
+      const right=document.createElement("div"); right.className="right";
+      const price=document.createElement("div"); price.className="price"; price.id="price-"+l.id;
+      right.append(price);
+      row.append(box,what,right,pop); host.appendChild(row);
+    }
+  }
+  function closePops(){ document.querySelectorAll(".pop").forEach(p=>p.hidden=true); document.querySelectorAll(".info,.ibtn").forEach(b=>b.setAttribute("aria-expanded","false")); }
+  document.addEventListener("click",closePops);
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape") closePops(); });
+
+  function paintLines(){
+    let month=0, fte=0;
+    for(const l of LINES){
+      const on=!!sel[l.id]; const row=$("line-"+l.id);
+      row.classList.toggle("on",on); row.classList.toggle("off",!on);
+      const p=l.fee;
+      $("price-"+l.id).innerHTML=""; const pv=document.createElement("span"); pv.textContent=money(p); $("price-"+l.id).appendChild(pv);
+      { const sm=document.createElement("small"); sm.textContent=money(l.yearly||p*12)+" per year"; $("price-"+l.id).appendChild(sm); }
+      /* popover */
+      const pop=$("pop-"+l.id); pop.innerHTML="";
+      const h=document.createElement("h4"); h.textContent="Team on this line"; pop.appendChild(h);
+      {
+      const tb=document.createElement("table");
+      const hr=document.createElement("tr"); hr.className="hd"; for(const txt of ["Role","Share of a full-time person"]){ const th=document.createElement("td"); th.className=txt==="Role"?"":"r"; th.textContent=txt; hr.appendChild(th); } tb.appendChild(hr);
+      const pct5=f=>f<=0?0:Math.max(5,Math.round(f*20)*5);
+      for(const [pid,f] of Object.entries(FTE[l.id]||{})){ const tr=document.createElement("tr"); const a=document.createElement("td"); a.textContent=ROLES[pid]; const b=document.createElement("td"); b.className="r"; const q=pct5(f); b.textContent=q+"%"; tr.append(a,b); tb.appendChild(tr); }
+      const tr=document.createElement("tr"); const a=document.createElement("td"); a.textContent="Total"; const b=document.createElement("td"); b.className="r"; b.textContent=fteOf(l.id).toFixed(1)+" full-time people"; tr.append(a,b); tb.appendChild(tr);
+      pop.appendChild(tb); }
+      if(on){ month+=p; fte+=fteOf(l.id); }
+    }
+    const people=Math.ceil(fte-1e-9); TOT={month,year:month*12,people};
+    $("t-month").textContent=money(month); $("t-year").textContent=money(month*12)+" per year";
+    $("t-people").textContent=people+(people===1?" person":" people")+" working on the lines ticked";
+  }
+
+  /* ---------- checkbook ---------- */
+  function statusKey(it){
+    if(it.k==="a") return it.s==="Idea"?"idea":"added";
+    if(it.s==="Planned"&&(!it.m||it.m==="Unplanned")) return "unsched";
+    return "motion";
+  }
+  function statusWord(it){
+    if(it.s==="Done") return "Delivered";
+    if(it.s==="In Review"||it.s==="In Rework") return "In testing";
+    if(it.s==="In Progress") return "Being built";
+    if(it.s==="Planned"&&it.m&&it.m!=="Unplanned") return monthName(it.m);
+    return "";
+  }
+  const GROUPS=[
+    ["motion","Signed, delivered or in motion","c1","signed"],["unsched","Signed, not yet scheduled","c4","signed"],
+    ["added","Added on top, delivered or in motion",null,"added"],["idea","Added on top, ideas not yet confirmed",null,"added"]
+  ];
+  function monthName(m){ if(!m||m==="Unplanned"||m==="Ideas") return ""; const [y,mo]=m.split("-"); const N=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; return N[parseInt(mo,10)-1]+" "+y; }
+  /* Expected draw-down of the unscheduled signed deliverables before the form converts. Not confirmed by Heritage. */
+  const PROJECT={"2026-12":12,"2027-01":3};
+  function buildChart(signed,added,total){
+    const MONTHS=["2026-04","2026-05","2026-06","2026-07","2026-08","2026-09","2026-10","2026-11","2026-12","2027-01"];
+    /* bars: current points per month, as the Linear cycle view shows them. left: contracted points not yet placed. */
+    const sv={},av={},cv={}; for(const m of MONTHS){ sv[m]=0; av[m]=0; cv[m]=0; }
+    for(const i of signed){ if(sv[i.m]!==undefined){ sv[i.m]+=i.p||0; cv[i.m]+=i.c||0; } }
+    for(const i of added){ if(i.s!=="Canceled"&&av[i.m]!==undefined) av[i.m]+=i.p||0; }
+    const projTotal=Object.values(PROJECT).reduce((a,b)=>a+b,0);
+    const leftAfter=Math.max(0,total-MONTHS.reduce((a,m)=>a+cv[m],0));
+    const live=added.filter(i=>i.s==="Idea"); const leftTop=live.reduce((a,i)=>a+(i.p||0),0); const topItems=new Set(live.map(i=>i.n)).size;
+    const cols=MONTHS.length+2, cw=62, padL=10, padR=10, W=padL+cols*cw+padR, top=28, base=150, H=196;
+    const maxV=Math.max(leftAfter,leftTop,...MONTHS.map(m=>sv[m]+av[m]+(PROJECT[m]||0)))||1; const sc=(base-top-18)/maxV;
+    const NS="http://www.w3.org/2000/svg"; const svg=$("chart"); svg.innerHTML=""; svg.setAttribute("viewBox","0 0 "+W+" "+H);
+    const el=(n,at,txt)=>{ const e=document.createElementNS(NS,n); for(const k in at) e.setAttribute(k,at[k]); if(txt!=null) e.textContent=txt; svg.appendChild(e); return e; };
+    const N=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    let cum=0;
+    MONTHS.forEach((m,idx)=>{
+      const x=padL+idx*cw+10, bw=cw-20; const s=sv[m], a=av[m], pr=PROJECT[m]||0; cum+=cv[m];
+      const hs=s*sc, ha=a*sc, hp=pr*sc;
+      if(s>0) el("rect",{x,y:base-hs,width:bw,height:hs,fill:"var(--accent)"});
+      if(pr>0) el("rect",{x,y:base-hs-hp,width:bw,height:hp,fill:"var(--accent-mid)"});
+      if(a>0) el("rect",{x,y:base-hs-hp-ha,width:bw,height:ha,fill:"var(--warn)"});
+      el("text",{x:x+bw/2,y:base-hs-hp-ha-5,"text-anchor":"middle",class:"val"},(s+pr+a)>0?String(s+pr+a):"0");
+      const [y,mo]=m.split("-"); el("text",{x:x+bw/2,y:base+15,"text-anchor":"middle",class:"lbl"},N[parseInt(mo,10)-1]+(mo==="01"||idx===0?" "+y.slice(2):""));
+    });
+    const bw=cw-20;
+    const lx=padL+MONTHS.length*cw; el("line",{x1:lx+4,y1:top-6,x2:lx+4,y2:base,class:"axis","stroke-dasharray":"2 3"});
+    el("text",{x:lx+2*cw-10,y:14,"text-anchor":"end",class:"cap"},"After Jan 27 ("+(Math.max(0,leftAfter-projTotal)+leftTop)+" points)");
+    [[leftAfter,"var(--accent)","Signed","",String(leftAfter)],[leftTop,"var(--warn)","On top","",String(leftTop)]].forEach(([v,col,lab,sub,txt],j)=>{
+      const x=lx+j*cw+10, h=v*sc;
+      if(j===0&&projTotal>0){
+        const hp=Math.min(projTotal,v)*sc, rest=Math.max(0,v-projTotal);
+        el("rect",{x,y:base-hp,width:bw,height:hp,fill:"var(--accent-mid)"});
+        if(hp>16) el("text",{x:x+bw/2,y:base-hp/2+4,"text-anchor":"middle",class:"val inv"},String(Math.min(projTotal,v)));
+        if(rest>0&&(h-hp)>16) el("text",{x:x+bw/2,y:base-hp-(h-hp)/2+4,"text-anchor":"middle",class:"val"},String(rest));
+      }
+      el("rect",{x,y:base-h,width:bw,height:h,fill:"none",stroke:col,"stroke-width":"1.5","stroke-dasharray":"4 3"});
+      el("text",{x:x+bw/2,y:base-h-5,"text-anchor":"middle",class:"val"},txt);
+      el("text",{x:x+bw/2,y:base+15,"text-anchor":"middle",class:"lbl"},lab);
+      if(sub) el("text",{x:x+bw/2,y:base+28,"text-anchor":"middle",class:"lbl"},sub);
+    });
+    el("line",{x1:padL,y1:base+.5,x2:W-padR,y2:base+.5,class:"axis"});
+    const before=MONTHS.reduce((a,m)=>a+sv[m]+av[m],0), beforeAll=before+projTotal;
+    el("text",{x:padL,y:14,class:"cap"},"Through Jan 27 ("+beforeAll+" points)");
+  }
+  function buildBook(){
+    const signed=ITEMS.filter(i=>i.k==="c"); const added=ITEMS.filter(i=>i.k==="a");
+    const uniq=list=>new Set(list.map(i=>i.n)).size; const SIGNED_COUNT=uniq(signed); $("b-items").textContent=String(SIGNED_COUNT);
+    const cpts=signed.reduce((a,i)=>a+(i.c||0),0); $("b-pts").textContent=String(cpts);
+    $("b-added").textContent=String(uniq(added.filter(i=>i.s!=="Canceled")));
+    const by={}; for(const i of ITEMS){ if(i.s==="Canceled") continue; const k=statusKey(i); (by[k]=by[k]||[]).push(i); }
+    const lg=$("legend"); lg.innerHTML="";
+    const sp=(k)=>(by[k]||[]).reduce((a,i)=>a+(i.k==="c"?(i.c||0):0),0);
+    buildChart(signed,added,cpts);
+    for(const [cls,label] of [["c1","Signed order form"],["c2","Signed, expected in the month, not yet scheduled"],["c4","Added on top"],["c5","Left after January 2027"]]){ const li=document.createElement("span"); const i=document.createElement("i"); i.className=cls; li.appendChild(i); li.appendChild(document.createTextNode(label)); lg.appendChild(li); }
+    { const pr=Object.values(PROJECT).reduce((a,b)=>a+b,0); const ls=Math.max(0,sp("unsched")-pr); const liveA=added.filter(i=>i.s==="Idea"); const lt=liveA.reduce((a,i)=>a+(i.p||0),0);
+      const open9=Math.max(0,sp("unsched")-pr);
+      $("b-left").textContent=(open9+lt)+" points"; $("b-left-s").textContent="Signed deliverables still open, plus the ideas on top"; }
+    const host=$("groups"); host.innerHTML="";
+    const SUMS={signed:["Signed order form",signed],added:["Added on top",added]}; let lastSum=null;
+    for(const [k,label,cls,sumKey] of GROUPS){
+      const list=by[k]||[]; if(!list.length) continue;
+      if(sumKey!==lastSum){ lastSum=sumKey; const [sl,sItems]=SUMS[sumKey]; const live=sItems.filter(i=>i.s!=="Canceled"); const sp=live.reduce((a,i)=>a+((i.k==="c"?i.c:i.p)||0),0); const cnt=uniq(live);
+        const hd=document.createElement("div"); hd.className="sumrow"; const a=document.createElement("span"); a.textContent=sl; const b=document.createElement("span"); b.className="n"; b.textContent=cnt+(sumKey==="signed"?" deliverables · ":" items · ")+sp+" pts"; hd.append(a,b); host.appendChild(hd); }
+      const det=document.createElement("details"); det.className="grp";
+      const sum=document.createElement("summary"); const l=document.createElement("span"); l.className="l"; l.textContent=label; const n=document.createElement("span"); n.className="n";
+      const ptsSum=list.reduce((a,i)=>a+((i.k==="c"?i.c:i.p)||0),0); n.textContent=uniq(list)+(sumKey==="signed"?" deliverables · ":" items · ")+ptsSum+" pts"; sum.append(l,n); det.appendChild(sum);
+      const ul=document.createElement("ul");
+      for(const i of list){ const li=document.createElement("li"); const a=document.createElement("span"); const r=document.createElement("span"); r.className="ref"; r.textContent="#"+i.n; a.appendChild(r); a.appendChild(document.createTextNode(i.t)); const b=document.createElement("span"); b.className="pt";
+        const p=(i.k==="c"?i.c:i.p); const w=(k==="motion"||k==="added")?statusWord(i):""; b.textContent=(w?w+" · ":"")+(i.g?"gift":(p!=null?p+" pt"+(p===1?"":"s"):"–")); li.append(a,b); ul.appendChild(li); }
+      det.appendChild(ul); host.appendChild(det);
+    }
+    const tb=$("of-rows"); tb.innerHTML="";
+    for(const [f,s,n] of OFS){ const tr=document.createElement("tr"); for(const t of [f,s,n]){ const td=document.createElement("td"); td.textContent=t; tr.appendChild(td);} tb.appendChild(tr); }
+  }
+
+
+  /* ---------- hidden usage log: Supernal artifact events (Supabase, insert only, silent on failure) ---------- */
+  const TRACK={url:"https://cjszlbleajvvdgeyibir.supabase.co/rest/v1/artifact_events",key:"sb_publishable_TkFE7VzQABaz1wxqGF-joQ_WAcmERFQ",artifact:"heritage-2027-order-form"};
+  const cap=name=>(window.claude&&typeof window.claude.use==="function")?window.claude.use(name).catch(()=>null):Promise.resolve(null);
+  const uidP=cap("user").then(u=>u?u.id():null).catch(()=>null);
+  const sid=(()=>{ try{ let v=localStorage.getItem("hof-sid"); if(!v){ v=Math.random().toString(36).slice(2,10)+Date.now().toString(36); localStorage.setItem("hof-sid",v); } return v; }catch(_){ return "s"+Date.now().toString(36); } })();
+  const selected=()=>LINES.filter(l=>sel[l.id]).map(l=>l.id);
+  async function track(ev,extra){
+    try{
+      const viewer=await Promise.race([uidP,new Promise(r=>setTimeout(()=>r(null),1500))]);
+      const row={artifact:TRACK.artifact,event:ev,ref:(extra&&extra.ref)||null,host:location.host,session_id:sid,viewer:viewer||null,
+        data:Object.assign({lines:selected(),month:TOT.month,year:TOT.year,people:TOT.people,tz:Intl.DateTimeFormat().resolvedOptions().timeZone||"",screen:(innerWidth||0)+"x"+(innerHeight||0),hash:location.hash||""},extra||{}),
+        user_agent:(navigator.userAgent||"").slice(0,400)};
+      await fetch(TRACK.url,{method:"POST",keepalive:true,headers:{"apikey":TRACK.key,"Authorization":"Bearer "+TRACK.key,"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify(row)});
+    }catch(_){}
+  }
+
+  /* ---------- proposal PDF: only the lines ticked ---------- */
+  const refCode=()=>{ const bits=LINES.map(l=>sel[l.id]?"1":"0").join(""); return "HP-"+parseInt(bits,2).toString(36).toUpperCase()+"-"+Date.now().toString(36).toUpperCase().slice(-5); };
+  function buildPdf(ref){
+    const J=window.jspdf&&window.jspdf.jsPDF; if(!J) return null;
+    const doc=new J({unit:"mm",format:"letter"}); const W=215.9, M=18, CW=W-2*M; let y=M;
+    const INK=[22,29,25], MUTED=[95,106,100], ACC=[30,75,58], SOFT=[226,236,230], LINE=[213,218,212];
+    const txt=(str,x,yy,o)=>{ o=o||{}; doc.setFont("helvetica",o.bold?"bold":"normal"); doc.setFontSize(o.size||10.5); doc.setTextColor(...(o.color||INK)); doc.text(str,x,yy,{align:o.align||"left"}); };
+    const wrap=(str,w,size)=>{ doc.setFont("helvetica","normal"); doc.setFontSize(size); return doc.splitTextToSize(str,w); };
+    const date=new Date().toLocaleDateString("en-US",{year:"numeric",month:"long",day:"numeric"});
+    txt("PROPOSAL",M,y,{size:9,bold:true,color:ACC}); y+=8;
+    txt("Heritage x Supernal 2027",M,y,{size:22,bold:true}); y+=8;
+    txt("Services Heritage selected for January 2027 onward. Prepared "+date+".",M,y,{size:10.5,color:MUTED}); y+=5;
+    txt("Built by Heritage from the Supernal 2027 services page. Supernal issues the order form from this proposal.",M,y,{size:10.5,color:MUTED}); y+=10;
+    /* table head */
+    doc.setDrawColor(...INK); doc.setLineWidth(.5); doc.line(M,y,W-M,y); y+=5.5;
+    txt("LINE",M,y,{size:8,bold:true,color:MUTED}); txt("FEE PER MONTH",W-M-32,y,{size:8,bold:true,color:MUTED,align:"right"}); txt("PER YEAR",W-M,y,{size:8,bold:true,color:MUTED,align:"right"}); y+=3;
+    doc.setDrawColor(...LINE); doc.setLineWidth(.3); doc.line(M,y,W-M,y); y+=6.5;
+    const on=LINES.filter(l=>sel[l.id]);
+    for(const l of on){
+      const nameW=CW-70;
+      const nl=wrap(l.name,nameW,11.5); txt(nl,M,y,{size:11.5,bold:true});
+      txt(money(l.fee),W-M-32,y,{size:11.5,bold:true,align:"right"}); txt(money(l.yearly||l.fee*12),W-M,y,{size:10.5,color:MUTED,align:"right"});
+      y+=nl.length*5.2;
+      const sl=wrap(l.sub,nameW,9.5); txt(sl,M,y,{size:9.5,color:MUTED}); y+=sl.length*4.3;
+      txt((l.locked?"Always included":"Selected")+"  ·  "+l.status+"  ·  "+fteOf(l.id).toFixed(1)+" full-time people",M,y,{size:8.5,color:ACC}); y+=4;
+      doc.setDrawColor(...LINE); doc.line(M,y,W-M,y); y+=6.5;
+    }
+    /* totals */
+    y+=2; doc.setFillColor(...SOFT); doc.rect(M,y,CW,30,"F");
+    txt("TOTAL PER MONTH",M+6,y+8,{size:8,bold:true,color:MUTED});
+    txt(money(TOT.month),W-M-6,y+13,{size:20,bold:true,align:"right"});
+    txt(money(TOT.year)+" per year",W-M-6,y+20,{size:10.5,color:MUTED,align:"right"});
+    txt(TOT.people+(TOT.people===1?" person":" people")+" working on these lines",W-M-6,y+25.5,{size:10.5,color:MUTED,align:"right"});
+    txt("Maintenance and the Dedicated Private Environment are always included.",M+6,y+14,{size:9,color:MUTED});
+    txt("Fees are per month, billed monthly, from January 2027.",M+6,y+19,{size:9,color:MUTED});
+    y+=38;
+    const notOn=LINES.filter(l=>!sel[l.id]);
+    if(notOn.length){ txt("Not selected: "+notOn.map(l=>l.name).join(", ")+".",M,y,{size:9,color:MUTED}); y+=6; }
+    /* footer */
+    const fy=279.4-M+2;
+    doc.setDrawColor(...LINE); doc.line(M,fy-6,W-M,fy-6);
+    txt("Reference "+ref+"  ·  Not an order form. Supernal confirms scope, start date and terms on the order form.",M,fy,{size:8,color:MUTED});
+    txt("Supernal",W-M,fy,{size:8,bold:true,color:ACC,align:"right"});
+    return doc;
+  }
+  async function printProposal(){
+    const btn=$("btn-print"); const ref=refCode();
+    btn.disabled=true;
+    try{
+      const doc=buildPdf(ref);
+      if(!doc){ track("print",{ref,via:"browser-print"}); window.print(); return; }
+      const name="Heritage-Supernal-2027-proposal-"+ref+".pdf";
+      const blob=doc.output("blob"); let via="tab";
+      let w=null; try{ w=window.open(URL.createObjectURL(blob),"_blank"); }catch(_){ w=null; }
+      if(!w){
+        const dl=await cap("downloads");
+        if(dl){ via="download"; try{ await dl.save({filename:name,data:blob}); }catch(e){ if(e&&e.code==="declined"){ via="declined"; } else { via="anchor"; doc.save(name); } } }
+        else { via="anchor"; doc.save(name); }
+      }
+      track("print",{ref,via});
+    } finally { btn.disabled=false; }
+  }
+  $("btn-print").addEventListener("click",printProposal);
+
+  function paint(){ paintLines(); }
+  buildLines(); buildBook(); load();
+  paint();
+  track("view");
+  window.addEventListener("hashchange",()=>{ load(); paint(); });
+})();
+</script>
+
+</body>
+</html>

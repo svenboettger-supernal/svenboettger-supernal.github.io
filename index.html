@@ -130,6 +130,8 @@ header .lead p{font-size:16px}
 .facts .s{font-size:13px;color:var(--muted)}
 .sumrow{display:flex;justify-content:space-between;gap:12px;padding:10px 18px 10px 44px;border-top:1px solid var(--line-strong);background:var(--accent-soft);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .sumrow .n{font-variant-numeric:tabular-nums;text-transform:none;letter-spacing:0;font-size:14px;color:var(--ink)}
+.sumrow.total{background:var(--paper);border-top:2px solid var(--ink);color:var(--ink)}
+.sumrow.total+.sumrow.total{border-top:1px solid var(--line)}
 details.grp{border-top:1px solid var(--line)}
 details.grp summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:12px;padding:11px 18px;font-weight:500}
 details.grp summary::-webkit-details-marker{display:none}
@@ -418,6 +420,10 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
         const p=(i.k==="c"?i.c:i.p); const w=(k==="motion"||k==="added")?statusWord(i):""; b.textContent=(w?w+" · ":"")+(i.g?"gift":(p!=null?p+" pt"+(p===1?"":"s"):"–")); li.append(a,b); ul.appendChild(li); }
       det.appendChild(ul); host.appendChild(det);
     }
+    /* totals across signed and added */
+    { const live=k=>(by[k]||[]); const pts=list=>list.reduce((a,i)=>a+((i.k==="c"?i.c:i.p)||0),0);
+      const mk=(label,sKey,aKey)=>{ const sL=live(sKey), aL=live(aKey); const hd=document.createElement("div"); hd.className="sumrow total"; const a=document.createElement("span"); a.textContent=label; const b=document.createElement("span"); b.className="n"; b.textContent=uniq(sL)+" deliverables + "+uniq(aL)+" items · "+(pts(sL)+pts(aL))+" pts"; hd.append(a,b); host.appendChild(hd); };
+      mk("Total delivered or in motion","motion","added"); mk("Total open, not yet scheduled or confirmed","unsched","idea"); }
     const tb=$("of-rows"); tb.innerHTML="";
     for(const [f,s,n] of OFS){ const tr=document.createElement("tr"); for(const t of [f,s,n]){ const td=document.createElement("td"); td.textContent=t; tr.appendChild(td);} tb.appendChild(tr); }
   }

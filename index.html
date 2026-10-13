@@ -253,14 +253,11 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
   for(const l of LINES) sel[l.id]=l.def;
   function load(){
     try{ const s=JSON.parse(localStorage.getItem("hof-state-v4")||"null"); if(s&&s.sel) for(const l of LINES) if(!l.locked&&typeof s.sel[l.id]==="boolean") sel[l.id]=s.sel[l.id]; }catch(_){}
-    const h=(location.hash||"").replace("#","");
-    if(h){ const on=new Set(h.split("-")); const known=LINES.filter(l=>!l.locked).map(l=>l.id); if(on.has("none")||known.some(k=>on.has(k))){ for(const k of known) sel[k]=on.has(k); } }
+    /* a shared link never carries a selection: strip any old hash so every first open starts with the locked lines only */
+    if(location.hash){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(_){} }
   }
   function persist(){
     try{ localStorage.setItem("hof-state-v4",JSON.stringify({sel})); }catch(_){}
-    const on=LINES.filter(l=>!l.locked&&sel[l.id]).map(l=>l.id);
-    const h="#"+(on.length?on.join("-"):"none");
-    if(location.hash!==h){ try{ history.replaceState(null,"",h); }catch(_){} }
   }
 
 
@@ -436,7 +433,7 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     try{
       const viewer=await Promise.race([uidP,new Promise(r=>setTimeout(()=>r(null),1500))]);
       const row={artifact:TRACK.artifact,event:ev,ref:(extra&&extra.ref)||null,host:location.host,session_id:sid,viewer:viewer||null,
-        data:Object.assign({lines:selected(),month:TOT.month,year:TOT.year,people:TOT.people,tz:Intl.DateTimeFormat().resolvedOptions().timeZone||"",screen:(innerWidth||0)+"x"+(innerHeight||0),hash:location.hash||""},extra||{}),
+        data:Object.assign({lines:selected(),month:TOT.month,year:TOT.year,people:TOT.people,tz:Intl.DateTimeFormat().resolvedOptions().timeZone||"",screen:(innerWidth||0)+"x"+(innerHeight||0)},extra||{}),
         user_agent:(navigator.userAgent||"").slice(0,400)};
       await fetch(TRACK.url,{method:"POST",keepalive:true,headers:{"apikey":TRACK.key,"Authorization":"Bearer "+TRACK.key,"Content-Type":"application/json","Prefer":"return=minimal"},body:JSON.stringify(row)});
     }catch(_){}
@@ -510,7 +507,6 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
   buildLines(); buildBook(); load();
   paint();
   track("view");
-  window.addEventListener("hashchange",()=>{ load(); paint(); });
 })();
 </script>
 

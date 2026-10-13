@@ -471,7 +471,10 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
   const uidP=cap("user").then(u=>u?u.id():null).catch(()=>null);
   const sid=(()=>{ try{ let v=localStorage.getItem("hof-sid"); if(!v){ v=Math.random().toString(36).slice(2,10)+Date.now().toString(36); localStorage.setItem("hof-sid",v); } return v; }catch(_){ return "s"+Date.now().toString(36); } })();
   const selected=()=>LINES.filter(l=>sel[l.id]).map(l=>l.id);
+  let IGNORE=false;
+  try{ const h=(location.hash||"").toLowerCase(); if(h==="#ignore"){ localStorage.setItem("hof-ignore","1"); } else if(h==="#track"){ localStorage.removeItem("hof-ignore"); } IGNORE=localStorage.getItem("hof-ignore")==="1"; }catch(_){}
   async function track(ev,extra){
+    if(IGNORE) return;
     try{
       const viewer=await Promise.race([uidP,new Promise(r=>setTimeout(()=>r(null),1500))]);
       const row={artifact:TRACK.artifact,event:ev,ref:(extra&&extra.ref)||null,host:location.host,session_id:sid,viewer:viewer||null,

@@ -63,6 +63,7 @@ header .lead p{font-size:16px}
 .line.locked.on .box svg{color:var(--paper)}
 .what{min-width:0;display:grid;gap:3px}
 .what b{font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.what .no{color:var(--muted);font-weight:500;font-variant-numeric:tabular-nums;flex:none}
 .ibtn{width:18px;height:18px;border-radius:50%;border:0;background:var(--accent-soft);color:var(--accent);cursor:pointer;padding:0;display:inline-grid;place-items:center;flex:none}
 .ibtn svg{width:11px;height:11px;display:block}
 .ibtn:hover,.ibtn[aria-expanded="true"]{background:var(--accent);color:var(--accent-ink)}
@@ -305,12 +306,12 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
   const CHECK='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   function buildLines(){
     const host=$("lines"); host.innerHTML="";
-    for(const l of LINES){
+    LINES.forEach((l,idx)=>{
       const row=document.createElement("div"); row.className="line"+(l.locked?" locked":""); row.id="line-"+l.id;
       const box=document.createElement("button"); box.type="button"; box.className="box"; box.innerHTML=CHECK; box.setAttribute("aria-label",(l.locked?"Included: ":"Include ")+l.name); box.disabled=!!l.locked;
       box.addEventListener("click",()=>{ sel[l.id]=!sel[l.id]; paint(); persist(); track("select",{line:l.id,on:sel[l.id]}); });
       const what=document.createElement("div"); what.className="what";
-      const b=document.createElement("b"); b.textContent=l.name;
+      const b=document.createElement("b"); const no=document.createElement("span"); no.className="no"; no.textContent=(idx+1)+"."; b.append(no,document.createTextNode(l.name));
       if(l.note){ const ib=document.createElement("button"); ib.type="button"; ib.className="ibtn"; ib.id="note-"+l.id; ib.setAttribute("aria-label","About "+l.name); ib.setAttribute("aria-expanded","false"); ib.innerHTML='<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="2.6" r="1.1" fill="currentColor"/><rect x="5.1" y="4.8" width="1.8" height="5" rx=".9" fill="currentColor"/></svg>';
         const np=document.createElement("div"); np.className="pop notepop"; np.hidden=true; np.id="notepop-"+l.id;
         ib.addEventListener("click",ev=>{ ev.stopPropagation(); const open=np.hidden; closePops(); if(open){ np.innerHTML=""; const d=document.createElement("div"); d.textContent=l.note; np.appendChild(d); np.hidden=false; ib.setAttribute("aria-expanded","true"); } });
@@ -334,7 +335,7 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
       const price=document.createElement("div"); price.className="price"; price.id="price-"+l.id;
       right.append(price);
       row.append(box,what,right,pop); host.appendChild(row);
-    }
+    });
   }
   function closePops(){ document.querySelectorAll(".pop").forEach(p=>p.hidden=true); document.querySelectorAll(".info,.ibtn").forEach(b=>b.setAttribute("aria-expanded","false")); }
   document.addEventListener("click",closePops);
@@ -504,7 +505,7 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     const on=LINES.filter(l=>sel[l.id]);
     for(const l of on){
       const nameW=CW-70;
-      const nl=wrap(l.name,nameW,11.5); txt(nl,M,y,{size:11.5,bold:true});
+      const nl=wrap((LINES.indexOf(l)+1)+". "+l.name,nameW,11.5); txt(nl,M,y,{size:11.5,bold:true});
       txt(money(l.fee),W-M-32,y,{size:11.5,bold:true,align:"right"}); txt(money(l.yearly||l.fee*12),W-M,y,{size:10.5,color:MUTED,align:"right"});
       y+=nl.length*5.2;
       const sl=wrap(l.sub,nameW,9.5); txt(sl,M,y,{size:9.5,color:MUTED}); y+=sl.length*4.3;

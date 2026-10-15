@@ -262,9 +262,10 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
   const ROLES={
     jens:"Lead engineer", engineers:"Engineers", roger:"Security and infrastructure", ellen:"UI/UX designer",
     jon:"Video and brand lead", michelle:"Video production", majo:"Websites and content", aidan:"Copy and motion graphics",
-    ryan:"Chief Revenue Officer", stu:"Account manager", sven:"AI strategy and product lead", scott:"Chief Executive Officer"
+    ryan:"Chief Revenue Officer", stu:"Account manager", sven:"AI strategy and product lead", scott:"Chief Executive Officer",
+    websites:"Websites, content and copy", video:"Brand videos and production"
   };
-  const FTE={"maintenance":{"jens":0.2,"engineers":1,"roger":0.01,"ellen":0.01,"stu":0.05,"sven":0.3},"development":{"jens":0.65,"engineers":2.5,"roger":0.02,"ellen":0.05,"sven":0.4},"helpdesk":{"jens":0.25,"engineers":0.5,"roger":0.01,"ellen":0.01,"sven":0.25},"foreman":{"jens":0.25,"engineers":0.5,"roger":0.01,"ellen":0.01,"sven":0.25},"growth":{"majo":0.35,"jon":0.25,"michelle":0.25,"aidan":0.1,"sven":0.1,"stu":0.05,"ryan":0.05},"dpe":{"jens":0.05,"engineers":0.1,"roger":0.2}};
+  const FTE={"maintenance":{"jens":0.2,"engineers":1,"roger":0.01,"ellen":0.01,"stu":0.05,"sven":0.3},"development":{"jens":0.65,"engineers":2.5,"roger":0.02,"ellen":0.05,"sven":0.4},"helpdesk":{"jens":0.25,"engineers":0.5,"roger":0.01,"ellen":0.01,"sven":0.25},"foreman":{"jens":0.25,"engineers":0.5,"roger":0.01,"ellen":0.01,"sven":0.25},"growth":{"websites":0.25,"video":0.25,"sven":0.2,"stu":0.1,"ryan":0.1},"dpe":{"jens":0.05,"engineers":0.1,"roger":0.2}};
   /* fee: monthly fee. yearly: the figure on the order form where one exists, otherwise fee × 12. */
   const LINES=[
     {id:"maintenance",name:"Heritage AI app maintenance, with security",sub:"Uptime, bug fixes, hosting, security patching. What the signed order form converts to.",locked:true,def:true,fee:35417,yearly:425000,status:"Signed"},

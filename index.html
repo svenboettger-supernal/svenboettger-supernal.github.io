@@ -364,7 +364,8 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     }
     const people=Math.ceil(fte-1e-9); TOT={month,year:month*12,people};
     $("t-month").textContent=money(month); $("t-year").textContent=money(month*12)+" per year";
-    $("t-people").textContent=people+(people===1?" person":" people")+" working on the lines ticked";
+    { const base=LINES.filter(l=>l.locked); const bm=base.reduce((a,l)=>a+l.fee,0), by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
+      $("t-people").textContent="Maintenance and DPE: "+money(bm)+" per month, "+money(by)+" per year"; }
   }
 
   /* ---------- checkbook ---------- */
@@ -518,7 +519,8 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     txt("TOTAL PER MONTH",M+6,y+8,{size:8,bold:true,color:MUTED});
     txt(money(TOT.month),W-M-6,y+13,{size:20,bold:true,align:"right"});
     txt(money(TOT.year)+" per year",W-M-6,y+20,{size:10.5,color:MUTED,align:"right"});
-    txt(TOT.people+(TOT.people===1?" person":" people")+" working on these lines",W-M-6,y+25.5,{size:10.5,color:MUTED,align:"right"});
+    { const base=LINES.filter(l=>l.locked); const bm=base.reduce((a,l)=>a+l.fee,0), by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
+      txt("Maintenance and DPE: "+money(bm)+" per month, "+money(by)+" per year",W-M-6,y+25.5,{size:10.5,color:MUTED,align:"right"}); }
     txt("Maintenance and the Dedicated Private Environment are always included.",M+6,y+14,{size:9,color:MUTED});
     txt("Fees are per month, billed monthly, from January 2027.",M+6,y+19,{size:9,color:MUTED});
     y+=38;

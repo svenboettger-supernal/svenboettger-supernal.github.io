@@ -177,18 +177,18 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
 @media (max-width:760px){.cad-boxes{grid-template-columns:1fr}}
 /* supernal pods */
 .pods{display:grid;gap:12px}
-.pod-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
-.pod{background:var(--paper);border:1px solid var(--line);min-width:0}
+.pod-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto repeat(4,1fr);column-gap:14px}
+.pod{background:var(--paper);border:1px solid var(--line);min-width:0;display:grid;grid-row:span 5;grid-template-rows:subgrid}
 .pod-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line-strong)}
 .pod-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .pod-head em{font-style:normal;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
-.pod ul{list-style:none;margin:0;padding:0}
-.pod li{padding:11px 16px;border-bottom:1px solid var(--line);display:grid;gap:2px}
+.pod ul{display:contents;list-style:none;margin:0;padding:0}
+.pod li{padding:11px 16px;border-bottom:1px solid var(--line);display:grid;gap:2px;align-content:start}
 .pod li:last-child{border-bottom:0}
 .pod li b{font-weight:600;font-size:14px}
 .pod li i{font-style:normal;font-size:13px;color:var(--accent)}
 .pod li small{font-size:13px;color:var(--muted);line-height:1.45}
-@media (max-width:760px){.pod-cols{grid-template-columns:1fr}}
+@media (max-width:760px){.pod-cols{grid-template-columns:1fr;grid-template-rows:none;row-gap:14px}.pod{grid-row:auto;grid-template-rows:none}}
 @media print{
   body{background:#fff;padding:0}
   .line.off,.book,.printbar,.tablewrap,.pop,.cadence,.pods{display:none!important}
@@ -302,13 +302,12 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
         </ul>
       </div>
       <div class="pod">
-        <div class="pod-head"><span>Growth</span><em>5 people</em></div>
+        <div class="pod-head"><span>Growth</span><em>4 people</em></div>
         <ul>
           <li><b>Jonathan</b><i>VP of Special Projects</i><small>Brand videos, brand assets and campaigns</small></li>
           <li><b>Michelle</b><i>Video Production</i><small>Brand video shoots, production vendor</small></li>
           <li><b>Majo</b><i>Marketing Program Manager</i><small>Heritage Strategies website, Heritage AI website, content and publishing</small></li>
           <li><b>Aidan</b><i>Copy and Motion Graphics</i><small>Copywriting, motion graphics</small></li>
-          <li><b>Ryan</b><i>Chief Revenue Officer</i><small>Positioning, go-to-market, sales and revenue operations</small></li>
         </ul>
       </div>
     </div>

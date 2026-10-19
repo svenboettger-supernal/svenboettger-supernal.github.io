@@ -98,7 +98,14 @@ header .lead p{font-size:16px}
 /* totals */
 .totals{display:grid;border-top:2px solid var(--ink);background:var(--accent-soft)}
 .totals>div{padding:16px 18px;display:grid;gap:2px;justify-items:end;text-align:right}
+.topright{flex:none;display:grid;gap:10px;justify-items:end}
 .printbar{flex:none;margin-top:4px;display:flex;gap:8px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:4px;overflow:hidden;background:var(--paper)}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-size:12px;padding:4px 10px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line-strong)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.line[hidden]{display:none}
 .printbar button{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:4px;font-weight:500;font-size:14px}
 .printbar button:hover{filter:brightness(1.08)}
 .printbar button:disabled{opacity:.6;cursor:wait}
@@ -190,8 +197,13 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
       <h1>Heritage x Supernal 2027</h1>
       <p class="muted">Select the services Heritage requires from January 2027.</p>
     </div>
-    <div class="printbar">
-      <button type="button" id="btn-print"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6V2h8v4M4 12H2.5A1.5 1.5 0 0 1 1 10.5v-3A1.5 1.5 0 0 1 2.5 6h11A1.5 1.5 0 0 1 15 7.5v3a1.5 1.5 0 0 1-1.5 1.5H12M4 9.5h8V14H4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Print proposal</button>
+    <div class="topright">
+      <div class="printbar">
+        <button type="button" id="btn-print"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 6V2h8v4M4 12H2.5A1.5 1.5 0 0 1 1 10.5v-3A1.5 1.5 0 0 1 2.5 6h11A1.5 1.5 0 0 1 15 7.5v3a1.5 1.5 0 0 1-1.5 1.5H12M4 9.5h8V14H4z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>Print proposal</button>
+      </div>
+      <div class="seg" role="group" aria-label="Show lines for">
+        <button type="button" data-view="all" aria-pressed="true">All</button><button type="button" data-view="ai" aria-pressed="false">Heritage AI</button><button type="button" data-view="strategies" aria-pressed="false">Heritage Strategies</button>
+      </div>
     </div>
   </header>
 
@@ -272,7 +284,7 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     {id:"dpe",name:"Dedicated Private Environment",sub:"Heritage's own cloud project with private AI. Billed under its own order form.",locked:true,def:true,fee:7790,yearly:93485,status:"Out for signature",parent:"maintenance"},
     {id:"development",name:"Heritage AI additional feature requests",sub:"Continuous roadmap build against quarterly milestones. New features for advisors and clients.",def:false,fee:60000,status:"New",note:"At $60,000 per month this is the same bucket of energy as the Advanced tier of the signed order form: about three new features a month, on top of maintenance."},
     {id:"helpdesk",name:"Help Desk, AI Employee",sub:"AI-first support for Heritage users by phone, email and chat, 24/7, with human escalation.",def:false,fee:7000,status:"Order form sent"},
-    {id:"foreman",name:"Foreman, AI project manager",sub:"Runs the engagement workflow and chases missing client documents for Heritage Strategies.",def:false,fee:6000,status:"Order form sent"},
+    {id:"foreman",name:"Foreman, AI project manager",sub:"Runs the engagement workflow and chases missing client documents for Heritage Strategies.",def:false,fee:6000,status:"Order form sent",co:"strategies"},
     {id:"growth",name:"Sales and marketing advisory, Growth Pod",sub:"Both websites, content, brand videos and go-to-market advice. Or hire this in-house.",def:false,fee:3042,yearly:36500,status:"Order forms signed"}
   ];
   const ITEMS=[{"n":"1","t":"Flow Diagram Automation: new creation process (as well as record duplication for flow diagram)","c":2,"p":2,"s":"Done","m":"2026-04","k":"c","g":false},{"n":"2","t":"Estate Distribution Chart: auto-creation from book data","c":1,"p":1,"s":"In Rework","m":"2026-04","k":"c","g":false},{"n":"3","t":"Insurance Sheet: formatting flexibility & survivorship support (incl. #47)","c":1,"p":4,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"4","t":"Vault document rotation: correct sideways / upside-down PDFs","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"5","t":"Large Document Handling: AI retrieval & readability improvements","c":4,"p":4,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"6","t":"Record Deduplication: platform updates existing entries, no duplicates (all sheets except flow chart)","c":1,"p":1,"s":"Done","m":"2026-04","k":"c","g":false},{"n":"7","t":"Legal-Landscape PDF page on book print","c":2,"p":2,"s":"In Review","m":"2026-09","k":"c","g":false},{"n":"8","t":"Insurance & Asset Sheet AI auto-notes (Comdex, face amounts, owner/beneficiary, conversion dates, cash value)","c":1,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"9","t":"Presentation highlight & marker feature for section review","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"10","t":"Slideshow transition mode: reveal one line item at a time","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"11","t":"Business document build-out: LLC Agreement Summary template","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"12","t":"Vault File Auto-Labelling: correct labelling on upload (part 1 completed)","c":4,"p":2,"s":"Done","m":"2026-05","k":"c","g":false},{"n":"12","t":"Vault File Auto-Labelling: correct labelling on upload (part 2)","c":null,"p":2,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"13","t":"Medical section: auto-detect children under 18","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"14","t":"Engagement end date / client status category","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"15","t":"Alphabetical sorting in eval document selection (cross-page)","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"16","t":"Cross-page search in eval document selection","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"17","t":"DOB input for insurance calculations (datasheet \u2192 manual fallback)","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"18","t":"Sheet-level status indicators","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"19","t":"Per-user favourites and bookmarks on clients","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"20","t":"API Layer: endpoints, auth, rate limiting & documentation","c":4,"p":4,"s":"Done","m":"2026-07","k":"c","g":false},{"n":"21","t":"Multi-Tenant Architecture: DB schema, RBAC & firm isolation","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"22","t":"UX Research & Design: Part 1 \u2014 interviews, personas & journey mapping","c":4,"p":2,"s":"Done","m":"2026-07","k":"c","g":false},{"n":"22","t":"UX Research & Design: Part 2 \u2014 wireframes & usability testing","c":null,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"23","t":"Document Management: inventory, labelling & storage","c":2,"p":2,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"24","t":"Document Management: versioning, change detection & auto re-eval","c":2,"p":2,"s":"In Progress","m":"2026-09","k":"c","g":false},{"n":"25","t":"Evaluation Engine: question set builder & templates","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"26","t":"Evaluation Engine: runner, results queue & QA dashboard","c":4,"p":4,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"27","t":"Book Generation: engine & structured data collection","c":2,"p":2,"s":"In Review","m":"2026-10","k":"c","g":false},{"n":"28","t":"Book Generation: year-over-year analysis & bulk reports (EOY 2027)","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"29","t":"Flow Diagram & Estate Distribution: orchestration, record matching & tax","c":4,"p":4,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"30","t":"Document Viewer: source PDF with bounding-box highlighting","c":2,"p":2,"s":"Done","m":"2026-09","k":"c","g":false},{"n":"31","t":"Document Viewer: click-through navigation & mobile-responsive viewing","c":2,"p":2,"s":"Done","m":"2026-10","k":"c","g":false},{"n":"32","t":"LLC Manager: batch pipeline, entity extraction & summary UI","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"33","t":"Notifications: automated alerts, missing documents & renewal reminders","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"34","t":"Notifications: customer engagement analytics for firms","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"35","t":"Secure Book User access to Heritage AI App (client-facing)","c":4,"p":4,"s":"In Review","m":"2026-08","k":"c","g":false},{"n":"36","t":"Version Control: history, draft/published states & domain control","c":4,"p":4,"s":"In Rework","m":"2026-07","k":"c","g":false},{"n":"37","t":"Version Control: granular user-level visibility controls","c":2,"p":2,"s":"In Rework","m":"2026-07","k":"c","g":false},{"n":"38","t":"Admin: firm licensing & billing management","c":2,"p":2,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"39","t":"Admin: usage analytics, reporting & accuracy dashboard","c":2,"p":2,"s":"In Progress","m":"2026-06","k":"c","g":false},{"n":"40","t":"Admin: support ticket system & revenue reporting","c":2,"p":2,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"41","t":"Salesforce Integration: bidirectional sync, API layer & Ridgeback compat (low prio until customers ask for it)","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"42","t":"Pilot Programme: firm onboarding, success tracking & rollout prep","c":2,"p":4,"s":"In Progress","m":"2026-09","k":"c","g":false},{"n":"43","t":"AI Intelligence \u2014 Natural language search across all customer data","c":2,"p":2,"s":"In Review","m":"2026-06","k":"c","g":false},{"n":"44","t":"AI Intelligence: insight cards & expiring document alert system","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"45","t":"Client Data Room: document upload without book impact","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"46","t":"Insurance: Premium-Paid-to-Year backend calculation","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"47","t":"Survivorship policy support (merged into #3)","c":2,"p":0,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"48","t":"Auto-convert uploaded files to PDF","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"49","t":"Automated pipeline for ingesting Heritage Books PDFs into the vault, eliminating manual processing","c":null,"p":2,"s":"Done","m":"2026-05","k":"a","g":false},{"n":"50","t":"Authentication emails (signup, password reset, etc.) with Heritage branding","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"51","t":"Automated Hand-Off Book Creation","c":null,"p":1,"s":"In Progress","m":"2026-09","k":"a","g":false},{"n":"53","t":"Disclosure integration: login page, monthly click-to-agree, PDF export and consent history","c":null,"p":1,"s":"Done","m":"2026-08","k":"a","g":false},{"n":"54","t":"Dummy Data Demo Heritage Vault","c":null,"p":2,"s":"Planned","m":"2026-10","k":"a","g":false},{"n":"55","t":"In-app LLM chat: ChatGPT-style interface with model picker inside Heritage Vault","c":null,"p":4,"s":"In Review","m":"2026-09","k":"a","g":false},{"n":"57","t":"Partner API: partner firms pull book data into their own systems (low prio until customers ask for it) [6 Points]","c":null,"p":8,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"58","t":"Sub-Assets [not confirmed]","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"59","t":"Sales and Planning Recommendations","c":null,"p":4,"s":"In Review","m":"2026-10","k":"a","g":false},{"n":"60","t":"Platform & PDF Branding Whitelabel","c":null,"p":2,"s":"Planned","m":"2026-10","k":"a","g":false},{"n":"61","t":"Sibling asset sharing: copy assets across sibling profiles for family clients","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"62","t":"Spell check across all sheets","c":null,"p":null,"s":"Done","m":"2026-09","k":"a","g":true},{"n":"63","t":"Asset Sheet Improvements [not confirmed]","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"64","t":"Change attribution: cross-sheet visibility, comments and owner notification","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"65","t":"UI and UX research with Heritage's own clients","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"66","t":"Utility Patents","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"67","t":"Mobile App on phone (ios or android)","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"68","t":"Children's doctors on the data sheet","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"69","t":"Settings page to improve UX","c":null,"p":null,"s":"Done","m":"2026-09","k":"a","g":true},{"n":"70","t":"Client Intake Questions Project","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"71","t":"Integrations to key industry partners (one by one)","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"72","t":"Source document indicator on sheet cells, and a lasting highlight when you jump to a source","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"73","t":"Tell clients which uploaded documents the AI did not use","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false}];
@@ -289,15 +301,17 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
   /* ---------- state ---------- */
   const $=id=>document.getElementById(id);
   const money=n=>"$"+Math.round(n).toLocaleString("en-US");
-  let sel={}, TOT={month:0,year:0,people:0};
+  let sel={}, view="all", TOT={month:0,year:0,people:0};
+  /* view filter: Foreman is Heritage Strategies, every other line is Heritage AI */
+  const inView=l=>view==="all"||(l.co||"ai")===view;
   for(const l of LINES) sel[l.id]=l.def;
   function load(){
-    try{ const s=JSON.parse(localStorage.getItem("hof-state-v4")||"null"); if(s&&s.sel) for(const l of LINES) if(!l.locked&&typeof s.sel[l.id]==="boolean") sel[l.id]=s.sel[l.id]; }catch(_){}
+    try{ const s=JSON.parse(localStorage.getItem("hof-state-v4")||"null"); if(s&&s.sel) for(const l of LINES) if(!l.locked&&typeof s.sel[l.id]==="boolean") sel[l.id]=s.sel[l.id]; if(s&&["all","ai","strategies"].includes(s.view)) view=s.view; }catch(_){}
     /* a shared link never carries a selection: strip any old hash so every first open starts with the locked lines only */
     if(location.hash){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(_){} }
   }
   function persist(){
-    try{ localStorage.setItem("hof-state-v4",JSON.stringify({sel})); }catch(_){}
+    try{ localStorage.setItem("hof-state-v4",JSON.stringify({sel,view})); }catch(_){}
   }
 
 
@@ -346,7 +360,7 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     let month=0, fte=0;
     for(const l of LINES){
       const on=!!sel[l.id]; const row=$("line-"+l.id);
-      row.classList.toggle("on",on); row.classList.toggle("off",!on);
+      row.classList.toggle("on",on); row.classList.toggle("off",!on); row.hidden=!inView(l);
       const p=l.fee;
       $("price-"+l.id).innerHTML=""; const pv=document.createElement("span"); pv.textContent=money(p); $("price-"+l.id).appendChild(pv);
       { const sm=document.createElement("small"); sm.textContent=money(l.yearly||p*12)+" per year"; $("price-"+l.id).appendChild(sm); }
@@ -360,12 +374,14 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
       for(const [pid,f] of Object.entries(FTE[l.id]||{})){ const tr=document.createElement("tr"); const a=document.createElement("td"); a.textContent=ROLES[pid]; const b=document.createElement("td"); b.className="r"; const q=pct5(f); b.textContent=q+"%"; tr.append(a,b); tb.appendChild(tr); }
       const tr=document.createElement("tr"); const a=document.createElement("td"); a.textContent="Total"; const b=document.createElement("td"); b.className="r"; b.textContent=fteOf(l.id).toFixed(1)+" full-time people"; tr.append(a,b); tb.appendChild(tr);
       pop.appendChild(tb); }
-      if(on){ month+=p; fte+=fteOf(l.id); }
+      if(on&&inView(l)){ month+=p; fte+=fteOf(l.id); }
     }
     const people=Math.ceil(fte-1e-9); TOT={month,year:month*12,people};
     $("t-month").textContent=money(month); $("t-year").textContent=money(month*12)+" per year";
-    { const base=LINES.filter(l=>l.locked); const bm=base.reduce((a,l)=>a+l.fee,0), by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
-      $("t-people").textContent="Maintenance and DPE: "+money(by)+" per year"; }
+    { const base=LINES.filter(l=>l.locked&&inView(l)); const by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
+      $("t-people").textContent=base.length?"Maintenance and DPE: "+money(by)+" per year":""; }
+    document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.view===view)));
+    document.querySelector("section.book").hidden=view==="strategies";
   }
 
   /* ---------- checkbook ---------- */
@@ -504,7 +520,7 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     doc.setDrawColor(...INK); doc.setLineWidth(.5); doc.line(M,y,W-M,y); y+=5.5;
     txt("LINE",M,y,{size:8,bold:true,color:MUTED}); txt("FEE PER MONTH",W-M-32,y,{size:8,bold:true,color:MUTED,align:"right"}); txt("PER YEAR",W-M,y,{size:8,bold:true,color:MUTED,align:"right"}); y+=3;
     doc.setDrawColor(...LINE); doc.setLineWidth(.3); doc.line(M,y,W-M,y); y+=6.5;
-    const on=LINES.filter(l=>sel[l.id]);
+    const on=LINES.filter(l=>sel[l.id]&&inView(l));
     for(const l of on){
       const nameW=CW-70;
       const nl=wrap((LINES.indexOf(l)+1)+". "+l.name,nameW,11.5); txt(nl,M,y,{size:11.5,bold:true});
@@ -519,9 +535,9 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     txt("TOTAL PER MONTH",M+6,y+8,{size:8,bold:true,color:MUTED});
     txt(money(TOT.month),W-M-6,y+13,{size:20,bold:true,align:"right"});
     txt(money(TOT.year)+" per year",W-M-6,y+20,{size:10.5,color:MUTED,align:"right"});
-    { const base=LINES.filter(l=>l.locked); const bm=base.reduce((a,l)=>a+l.fee,0), by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
-      txt("Maintenance and DPE: "+money(by)+" per year",W-M-6,y+25.5,{size:10.5,color:MUTED,align:"right"}); }
-    txt("Maintenance and the Dedicated Private Environment are always included.",M+6,y+14,{size:9,color:MUTED});
+    { const base=LINES.filter(l=>l.locked&&inView(l)); const by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
+      if(base.length){ txt("Maintenance and DPE: "+money(by)+" per year",W-M-6,y+25.5,{size:10.5,color:MUTED,align:"right"});
+        txt("Maintenance and the Dedicated Private Environment are always included.",M+6,y+14,{size:9,color:MUTED}); } }
     txt("Fees are per month, billed monthly, from January 2027.",M+6,y+19,{size:9,color:MUTED});
     y+=38;
     const notOn=LINES.filter(l=>!sel[l.id]);
@@ -551,6 +567,7 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     } finally { btn.disabled=false; }
   }
   $("btn-print").addEventListener("click",printProposal);
+  document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{ view=b.dataset.view; closePops(); paint(); persist(); track("filter",{view}); }));
 
   function paint(){ paintLines(); }
   buildLines(); buildBook(); load();

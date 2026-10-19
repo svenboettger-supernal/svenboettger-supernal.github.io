@@ -175,9 +175,23 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
 .cbox dl{margin:0;display:grid;gap:9px}.cbox dt{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}.cbox dd{margin:2px 0 0;font-size:14px}
 .cbox ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;font-size:14px}.cbox ul b{display:block;font-weight:600}
 @media (max-width:760px){.cad-boxes{grid-template-columns:1fr}}
+/* supernal pods */
+.pods{display:grid;gap:12px}
+.pod-cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.pod{background:var(--paper);border:1px solid var(--line);min-width:0}
+.pod-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line-strong)}
+.pod-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.pod-head em{font-style:normal;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pod ul{list-style:none;margin:0;padding:0}
+.pod li{padding:11px 16px;border-bottom:1px solid var(--line);display:grid;gap:2px}
+.pod li:last-child{border-bottom:0}
+.pod li b{font-weight:600;font-size:14px}
+.pod li i{font-style:normal;font-size:13px;color:var(--accent)}
+.pod li small{font-size:13px;color:var(--muted);line-height:1.45}
+@media (max-width:760px){.pod-cols{grid-template-columns:1fr}}
 @media print{
   body{background:#fff;padding:0}
-  .line.off,.book,.printbar,.tablewrap,.pop,.cadence{display:none!important}
+  .line.off,.book,.printbar,.tablewrap,.pop,.cadence,.pods{display:none!important}
   .form{border:0}
 }
 @media (max-width:640px){
@@ -261,6 +275,40 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
           <li><b>Project</b>Plan the work, review new requests and sign off on finished work. Every Wednesday, with Sven and Jens.</li>
           <li><b>Directors training</b>Show the Heritage team what is new in the app and answer their questions. Every Wednesday, with Jens.</li>
           <li><b>Marketing</b>Websites and brand videos, while they are running. Every week, with Sven, Jonathan, Michelle and Majo.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="pods" aria-label="Your Supernal pods">
+    <h2>Your Supernal pods</h2>
+    <div class="pod-cols">
+      <div class="pod">
+        <div class="pod-head"><span>Account and executive</span><em>4 people</em></div>
+        <ul>
+          <li><b>Stu</b><i>Account Manager</i><small>Commercial terms, order forms and pricing, contracting and renewals</small></li>
+          <li><b>Sven</b><i>Director AI Strategy</i><small>AI strategy and go-to-market, roadmap, scoping and priorities, product and project lead</small></li>
+          <li><b>Ryan</b><i>Chief Revenue Officer</i><small>Revenue strategy and thought leadership, escalation, overall relationship</small></li>
+          <li><b>Scott</b><i>Chief Executive Officer</i><small>Executive escalation, standing line to Heritage ownership, communication across entities</small></li>
+        </ul>
+      </div>
+      <div class="pod">
+        <div class="pod-head"><span>Product and engineering</span><em>4 people</em></div>
+        <ul>
+          <li><b>Jens</b><i>Lead Engineer</i><small>Build and releases, integrations, maintenance and uptime</small></li>
+          <li><b>Engineering team</b><i>Rotating team</i><small>Roadmap delivery, bug fixes</small></li>
+          <li><b>Roger</b><i>Security and Infrastructure</i><small>Access control and data handling, platform security, enterprise and SOC 2 review</small></li>
+          <li><b>Ellen</b><i>UI/UX Expert</i><small>Interface and interaction design, user research and usability testing</small></li>
+        </ul>
+      </div>
+      <div class="pod">
+        <div class="pod-head"><span>Growth</span><em>5 people</em></div>
+        <ul>
+          <li><b>Jonathan</b><i>VP of Special Projects</i><small>Brand videos, brand assets and campaigns</small></li>
+          <li><b>Michelle</b><i>Video Production</i><small>Brand video shoots, production vendor</small></li>
+          <li><b>Majo</b><i>Marketing Program Manager</i><small>Heritage Strategies website, Heritage AI website, content and publishing</small></li>
+          <li><b>Aidan</b><i>Copy and Motion Graphics</i><small>Copywriting, motion graphics</small></li>
+          <li><b>Ryan</b><i>Chief Revenue Officer</i><small>Positioning, go-to-market, sales and revenue operations</small></li>
         </ul>
       </div>
     </div>

@@ -177,21 +177,22 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
 @media (max-width:760px){.cad-boxes{grid-template-columns:1fr}}
 /* meeting structure: who from Supernal joins each meeting */
 .mtree{display:grid;gap:12px}
-.mcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.mnode{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--accent);min-width:0}
+.mcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:auto 1fr;column-gap:14px}
+.mnode{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--accent);min-width:0;display:grid;grid-row:span 2;grid-template-rows:subgrid}
 .mnode.q{border-top-color:var(--ink)} .mnode.w{border-top-color:var(--accent-mid)}
-.mnode-head{padding:12px 16px 10px;border-bottom:1px solid var(--line-strong);display:grid;gap:2px}
+.mnode-head{padding:12px 16px 10px;border-bottom:1px solid var(--line-strong);display:grid;gap:2px;align-content:start}
 .mnode-head span{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .mnode-head b{font-family:var(--display);font-weight:500;font-size:19px;line-height:1.2}
 .mnode-head small{font-size:13px;color:var(--muted)}
-.mnode h4{margin:0;padding:12px 16px 0;font-size:13px;font-weight:600}
-.mnode h4 small{font-weight:400;color:var(--muted)}
+.mnode h4{margin:0;padding:8px 16px;background:var(--accent-soft);color:var(--accent);font-size:12px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;border-bottom:1px solid var(--line)}
+.mnode .mbody>h4:not(:first-child){border-top:1px solid var(--line)}
+.mnode h4 small{font-size:11px;font-weight:500;letter-spacing:.04em;text-transform:none;color:var(--muted)}
 .mnode ul{list-style:none;margin:0;padding:6px 16px 10px;display:grid}
 .mnode li{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-bottom:1px solid var(--line);font-size:14px}
 .mnode li:last-child{border-bottom:0}
 .mnode li b{font-weight:600}
 .mnode li i{font-style:normal;color:var(--accent);font-size:13px;text-align:right}
-@media (max-width:760px){.mcols{grid-template-columns:1fr}}
+@media (max-width:760px){.mcols{grid-template-columns:1fr;grid-template-rows:none;row-gap:14px}.mnode{grid-row:auto;grid-template-rows:none}}
 @media print{
   body{background:#fff;padding:0}
   .line.off,.book,.printbar,.tablewrap,.pop,.cadence,.mtree{display:none!important}
@@ -286,9 +287,9 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
   <section class="mtree" aria-label="Who from Supernal is in each meeting">
     <h2>Who from Supernal is in each meeting</h2>
     <div class="mcols">
-      <div class="mnode q"><div class="mnode-head"><span>Quarterly</span><b>Executive review</b><small>With Tom Fanning Sr. and Tom Fanning Jr.</small></div><ul><li><b>Scott</b><i>Chief Executive Officer</i></li><li><b>Ryan</b><i>Chief Revenue Officer</i></li></ul></div>
-      <div class="mnode m"><div class="mnode-head"><span>Monthly</span><b>Progress check</b><small>With Tom Sr., Tom Jr., Chris Halvey and Jessica Varkey</small></div><ul><li><b>Ryan</b><i>Chief Revenue Officer</i></li><li><b>Sven</b><i>Director AI Strategy</i></li><li><b>Stu</b><i>Account Manager</i></li><li><b>Jens</b><i>Lead Engineer</i></li></ul></div>
-      <div class="mnode w"><div class="mnode-head"><span>Weekly</span><b>Working sessions</b><small>Three sessions, each with its own team</small></div><h4>Project <small>· Wednesday</small></h4><ul><li><b>Sven</b><i>Director AI Strategy</i></li><li><b>Jens</b><i>Lead Engineer</i></li></ul><h4>Directors training <small>· Wednesday</small></h4><ul><li><b>Jens</b><i>Lead Engineer</i></li></ul><h4>Marketing <small>· while running</small></h4><ul><li><b>Sven</b><i>Director AI Strategy</i></li><li><b>Jonathan</b><i>VP of Special Projects</i></li><li><b>Michelle</b><i>Video Production</i></li><li><b>Majo</b><i>Marketing Program Manager</i></li></ul></div>
+      <div class="mnode q"><div class="mnode-head"><span>Quarterly</span><b>Executive review</b><small>With Tom Fanning Sr. and Tom Fanning Jr.</small></div><div class="mbody"><ul><li><b>Scott</b><i>Chief Executive Officer</i></li><li><b>Ryan</b><i>Chief Revenue Officer</i></li></ul></div></div>
+      <div class="mnode m"><div class="mnode-head"><span>Monthly</span><b>Progress check</b><small>With Tom Sr., Tom Jr., Chris Halvey and Jessica Varkey</small></div><div class="mbody"><ul><li><b>Ryan</b><i>Chief Revenue Officer</i></li><li><b>Sven</b><i>Director AI Strategy</i></li><li><b>Stu</b><i>Account Manager</i></li><li><b>Jens</b><i>Lead Engineer</i></li></ul></div></div>
+      <div class="mnode w"><div class="mnode-head"><span>Weekly</span><b>Working sessions</b><small>Three sessions, each with its own team</small></div><div class="mbody"><h4>Project <small>· Wednesday</small></h4><ul><li><b>Sven</b><i>Director AI Strategy</i></li><li><b>Jens</b><i>Lead Engineer</i></li></ul><h4>Directors training <small>· Wednesday</small></h4><ul><li><b>Jens</b><i>Lead Engineer</i></li></ul><h4>Marketing <small>· while running</small></h4><ul><li><b>Sven</b><i>Director AI Strategy</i></li><li><b>Jonathan</b><i>VP of Special Projects</i></li><li><b>Michelle</b><i>Video Production</i></li><li><b>Majo</b><i>Marketing Program Manager</i></li></ul></div></div>
     </div>
   </section>
 

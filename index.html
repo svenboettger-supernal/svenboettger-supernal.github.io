@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&family=Public+Sans:wght@400;500;600&display=swap">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
 <style>
-/* Layout: one column order form. Header, the form lines with prices, a totals block, the Heritage AI app checkbook, the order forms it replaces. */
+/* Layout: one column order form. Header, the form lines with prices, a totals block, the Heritage AI app checkbook. */
 :root{
   --bg:#f5f6f3; --paper:#fdfdfb; --ink:#161d19; --muted:#5f6a64; --line:#d5dad4; --line-strong:#b6bfb8;
   --accent:#1e4b3a; --accent-mid:#7fae95; --accent-ink:#f3f7f4; --accent-soft:#e2ece6;
@@ -154,17 +154,6 @@ details.grp li span:first-child{min-width:0}
 details.grp li .pt{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
 details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margin-right:6px}
 
-/* order forms table */
-.tablewrap{overflow-x:auto;background:var(--paper);border:1px solid var(--line)}
-table.of{border-collapse:collapse;width:100%;min-width:640px}
-table.of th,table.of td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:14px}
-table.of th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
-table.of tr:last-child td{border-bottom:0}
-table.of td:first-child{white-space:nowrap;font-weight:600}
-.chip{display:inline-block;font-size:12px;padding:2px 8px;border-radius:3px;background:var(--accent-soft);color:var(--accent);font-weight:500;white-space:nowrap}
-.chip.wait{background:var(--warn-soft);color:var(--warn)}
-.chip.none{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
-
 /* suggested meeting cadence */
 .cadence{display:grid;gap:12px}
 .cad-boxes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
@@ -195,7 +184,7 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
 @media (max-width:760px){.mcols{grid-template-columns:1fr;grid-template-rows:none;row-gap:14px}.mnode{grid-row:auto;grid-template-rows:none}}
 @media print{
   body{background:#fff;padding:0}
-  .line.off,.book,.printbar,.tablewrap,.pop,.cadence,.mtree{display:none!important}
+  .line.off,.book,.printbar,.pop,.cadence,.mtree{display:none!important}
   .form{border:0}
 }
 @media (max-width:640px){
@@ -246,16 +235,6 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
       <div><span class="k">Not covered by maintenance</span><span class="v" id="b-left"></span><span class="s" id="b-left-s"></span></div>
     </div>
     <div id="groups"></div>
-  </section>
-
-  <section style="display:grid;gap:12px">
-    <h2>Order forms this replaces</h2>
-    <div class="tablewrap">
-      <table class="of">
-        <thead><tr><th>Form</th><th>Status today</th><th>From January 2027</th></tr></thead>
-        <tbody id="of-rows"></tbody>
-      </table>
-    </div>
   </section>
 
   <section class="cadence" aria-label="Suggested meeting cadence">
@@ -315,15 +294,6 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     {id:"growth",name:"Sales and marketing advisory, Growth Pod",sub:"Both websites, content, brand videos and go-to-market advice. Or hire this in-house.",def:false,fee:3042,yearly:36500,status:"Order forms signed"}
   ];
   const ITEMS=[{"n":"1","t":"Flow Diagram Automation: new creation process (as well as record duplication for flow diagram)","c":2,"p":2,"s":"Done","m":"2026-04","k":"c","g":false},{"n":"2","t":"Estate Distribution Chart: auto-creation from book data","c":1,"p":1,"s":"In Rework","m":"2026-04","k":"c","g":false},{"n":"3","t":"Insurance Sheet: formatting flexibility & survivorship support (incl. #47)","c":1,"p":4,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"4","t":"Vault document rotation: correct sideways / upside-down PDFs","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"5","t":"Large Document Handling: AI retrieval & readability improvements","c":4,"p":4,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"6","t":"Record Deduplication: platform updates existing entries, no duplicates (all sheets except flow chart)","c":1,"p":1,"s":"Done","m":"2026-04","k":"c","g":false},{"n":"7","t":"Legal-Landscape PDF page on book print","c":2,"p":2,"s":"In Review","m":"2026-09","k":"c","g":false},{"n":"8","t":"Insurance & Asset Sheet AI auto-notes (Comdex, face amounts, owner/beneficiary, conversion dates, cash value)","c":1,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"9","t":"Presentation highlight & marker feature for section review","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"10","t":"Slideshow transition mode: reveal one line item at a time","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"11","t":"Business document build-out: LLC Agreement Summary template","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"12","t":"Vault File Auto-Labelling: correct labelling on upload (part 1 completed)","c":4,"p":2,"s":"Done","m":"2026-05","k":"c","g":false},{"n":"12","t":"Vault File Auto-Labelling: correct labelling on upload (part 2)","c":null,"p":2,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"13","t":"Medical section: auto-detect children under 18","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"14","t":"Engagement end date / client status category","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"15","t":"Alphabetical sorting in eval document selection (cross-page)","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"16","t":"Cross-page search in eval document selection","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"17","t":"DOB input for insurance calculations (datasheet \u2192 manual fallback)","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"18","t":"Sheet-level status indicators","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"19","t":"Per-user favourites and bookmarks on clients","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"20","t":"API Layer: endpoints, auth, rate limiting & documentation","c":4,"p":4,"s":"Done","m":"2026-07","k":"c","g":false},{"n":"21","t":"Multi-Tenant Architecture: DB schema, RBAC & firm isolation","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"22","t":"UX Research & Design: Part 1 \u2014 interviews, personas & journey mapping","c":4,"p":2,"s":"Done","m":"2026-07","k":"c","g":false},{"n":"22","t":"UX Research & Design: Part 2 \u2014 wireframes & usability testing","c":null,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"23","t":"Document Management: inventory, labelling & storage","c":2,"p":2,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"24","t":"Document Management: versioning, change detection & auto re-eval","c":2,"p":2,"s":"In Progress","m":"2026-09","k":"c","g":false},{"n":"25","t":"Evaluation Engine: question set builder & templates","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"26","t":"Evaluation Engine: runner, results queue & QA dashboard","c":4,"p":4,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"27","t":"Book Generation: engine & structured data collection","c":2,"p":2,"s":"In Review","m":"2026-10","k":"c","g":false},{"n":"28","t":"Book Generation: year-over-year analysis & bulk reports (EOY 2027)","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"29","t":"Flow Diagram & Estate Distribution: orchestration, record matching & tax","c":4,"p":4,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"30","t":"Document Viewer: source PDF with bounding-box highlighting","c":2,"p":2,"s":"Done","m":"2026-09","k":"c","g":false},{"n":"31","t":"Document Viewer: click-through navigation & mobile-responsive viewing","c":2,"p":2,"s":"Done","m":"2026-10","k":"c","g":false},{"n":"32","t":"LLC Manager: batch pipeline, entity extraction & summary UI","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"33","t":"Notifications: automated alerts, missing documents & renewal reminders","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"34","t":"Notifications: customer engagement analytics for firms","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"35","t":"Secure Book User access to Heritage AI App (client-facing)","c":4,"p":4,"s":"In Review","m":"2026-08","k":"c","g":false},{"n":"36","t":"Version Control: history, draft/published states & domain control","c":4,"p":4,"s":"In Rework","m":"2026-07","k":"c","g":false},{"n":"37","t":"Version Control: granular user-level visibility controls","c":2,"p":2,"s":"In Rework","m":"2026-07","k":"c","g":false},{"n":"38","t":"Admin: firm licensing & billing management","c":2,"p":2,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"39","t":"Admin: usage analytics, reporting & accuracy dashboard","c":2,"p":2,"s":"In Progress","m":"2026-06","k":"c","g":false},{"n":"40","t":"Admin: support ticket system & revenue reporting","c":2,"p":2,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"41","t":"Salesforce Integration: bidirectional sync, API layer & Ridgeback compat (low prio until customers ask for it)","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"42","t":"Pilot Programme: firm onboarding, success tracking & rollout prep","c":2,"p":4,"s":"In Progress","m":"2026-09","k":"c","g":false},{"n":"43","t":"AI Intelligence \u2014 Natural language search across all customer data","c":2,"p":2,"s":"In Review","m":"2026-06","k":"c","g":false},{"n":"44","t":"AI Intelligence: insight cards & expiring document alert system","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"45","t":"Client Data Room: document upload without book impact","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"46","t":"Insurance: Premium-Paid-to-Year backend calculation","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"47","t":"Survivorship policy support (merged into #3)","c":2,"p":0,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"48","t":"Auto-convert uploaded files to PDF","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"49","t":"Automated pipeline for ingesting Heritage Books PDFs into the vault, eliminating manual processing","c":null,"p":2,"s":"Done","m":"2026-05","k":"a","g":false},{"n":"50","t":"Authentication emails (signup, password reset, etc.) with Heritage branding","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"51","t":"Automated Hand-Off Book Creation","c":null,"p":1,"s":"In Progress","m":"2026-09","k":"a","g":false},{"n":"53","t":"Disclosure integration: login page, monthly click-to-agree, PDF export and consent history","c":null,"p":1,"s":"Done","m":"2026-08","k":"a","g":false},{"n":"54","t":"Dummy Data Demo Heritage Vault","c":null,"p":2,"s":"Planned","m":"2026-10","k":"a","g":false},{"n":"55","t":"In-app LLM chat: ChatGPT-style interface with model picker inside Heritage Vault","c":null,"p":4,"s":"In Review","m":"2026-09","k":"a","g":false},{"n":"57","t":"Partner API: partner firms pull book data into their own systems (low prio until customers ask for it) [6 Points]","c":null,"p":8,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"58","t":"Sub-Assets [not confirmed]","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"59","t":"Sales and Planning Recommendations","c":null,"p":4,"s":"In Review","m":"2026-10","k":"a","g":false},{"n":"60","t":"Platform & PDF Branding Whitelabel","c":null,"p":2,"s":"Planned","m":"2026-10","k":"a","g":false},{"n":"61","t":"Sibling asset sharing: copy assets across sibling profiles for family clients","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"62","t":"Spell check across all sheets","c":null,"p":null,"s":"Done","m":"2026-09","k":"a","g":true},{"n":"63","t":"Asset Sheet Improvements [not confirmed]","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"64","t":"Change attribution: cross-sheet visibility, comments and owner notification","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"65","t":"UI and UX research with Heritage's own clients","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"66","t":"Utility Patents","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"67","t":"Mobile App on phone (ios or android)","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"68","t":"Children's doctors on the data sheet","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"69","t":"Settings page to improve UX","c":null,"p":null,"s":"Done","m":"2026-09","k":"a","g":true},{"n":"70","t":"Client Intake Questions Project","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"71","t":"Integrations to key industry partners (one by one)","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"72","t":"Source document indicator on sheet cells, and a lasting highlight when you jump to a source","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"73","t":"Tell clients which uploaded documents the AI did not use","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false}];
-  const OFS=[
-    ["OF-001 Heritage AI app build","Signed. Build threshold reached January 2027.","Converts to maintenance, line 1. Additional feature requests continue as line 3."],
-    ["OF-002 Dedicated Private Environment","Version 10 with Heritage for signature.","Stays separate at its own fee, line 2."],
-    ["OF-003 Brand videos","Signed. Shoot day 3 November.","Runs to completion on its own terms."],
-    ["OF-004 Websites and content","Signed. Both sites in build.","Folds into the Growth Pod if ticked, otherwise continues."],
-    ["OF-005 Foreman","Version 2 with Heritage since 18 September.","Becomes line 5 of this form."],
-    ["OF-006 Help Desk","Scoped, not yet confirmed by Heritage.","Becomes line 4 of this form."],
-    ["OF-007 New features, phase 3","Never issued.","Covered by line 3."]
-  ];
 
   /* ---------- state ---------- */
   const $=id=>document.getElementById(id);
@@ -506,8 +476,6 @@ table.of td:first-child{white-space:nowrap;font-weight:600}
     { const live=k=>(by[k]||[]); const pts=list=>list.reduce((a,i)=>a+((i.k==="c"?i.c:i.p)||0),0);
       const mk=(label,sKey,aKey)=>{ const sL=live(sKey), aL=live(aKey); const hd=document.createElement("div"); hd.className="sumrow total"; const a=document.createElement("span"); a.textContent=label; const b=document.createElement("span"); b.className="n"; b.textContent=uniq(sL)+" deliverables + "+uniq(aL)+" items · "+(pts(sL)+pts(aL))+" pts"; hd.append(a,b); host.appendChild(hd); };
       mk("Total delivered or in motion","motion","added"); mk("Total open, not yet scheduled or confirmed","unsched","idea"); }
-    const tb=$("of-rows"); tb.innerHTML="";
-    for(const [f,s,n] of OFS){ const tr=document.createElement("tr"); for(const t of [f,s,n]){ const td=document.createElement("td"); td.textContent=t; tr.appendChild(td);} tb.appendChild(tr); }
   }
 
 

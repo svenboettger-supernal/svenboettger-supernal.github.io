@@ -15,18 +15,18 @@
 :root{
   --bg:#f5f6f3; --paper:#fdfdfb; --ink:#161d19; --muted:#5f6a64; --line:#d5dad4; --line-strong:#b6bfb8;
   --accent:#1e4b3a; --accent-mid:#7fae95; --accent-ink:#f3f7f4; --accent-soft:#e2ece6;
-  --warn:#9a6b12; --warn-soft:#f6ecd3; --bad:#9b3b2e; --good:#1e6b42;
+  --hai:#1f4f8f; --hai-ink:#f2f6fb; --warn:#9a6b12; --warn-soft:#f6ecd3; --bad:#9b3b2e; --good:#1e6b42;
   --display:"Source Serif 4",Georgia,serif; --body:"Public Sans",system-ui,-apple-system,sans-serif;
   color-scheme:light;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --bg:#131816; --paper:#1a211d; --ink:#edf1ee; --muted:#9aa69f; --line:#2d3732; --line-strong:#43504a;
   --accent:#8fcaa9; --accent-mid:#4d7f66; --accent-ink:#10201a; --accent-soft:#1f3329;
-  --warn:#e2b45a; --warn-soft:#3a2f14; --bad:#e58a7c; --good:#7fd4a3; color-scheme:dark}}
+  --hai:#8fb8ea; --hai-ink:#0f1f36; --warn:#e2b45a; --warn-soft:#3a2f14; --bad:#e58a7c; --good:#7fd4a3; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#131816; --paper:#1a211d; --ink:#edf1ee; --muted:#9aa69f; --line:#2d3732; --line-strong:#43504a;
   --accent:#8fcaa9; --accent-mid:#4d7f66; --accent-ink:#10201a; --accent-soft:#1f3329;
-  --warn:#e2b45a; --warn-soft:#3a2f14; --bad:#e58a7c; --good:#7fd4a3; color-scheme:dark}
+  --hai:#8fb8ea; --hai-ink:#0f1f36; --warn:#e2b45a; --warn-soft:#3a2f14; --bad:#e58a7c; --good:#7fd4a3; color-scheme:dark}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;padding-inline:20px;padding-block:24px 56px}
@@ -64,9 +64,9 @@ header .lead p{font-size:16px}
 .what{min-width:0;display:grid;gap:3px}
 .what b{font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .what .no{color:var(--muted);font-weight:500;font-variant-numeric:tabular-nums;flex:none}
-.co{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.05em;flex:none}
-.co.ai{background:var(--accent);color:var(--accent-ink)}
-.co.strategies{background:var(--warn-soft);color:var(--warn)}
+.co{display:inline-flex;align-items:center;height:20px;padding:0 9px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.02em;flex:none;white-space:nowrap}
+.co.ai{background:var(--hai);color:var(--hai-ink)}
+.co.strategies{background:var(--accent);color:var(--accent-ink)}
 .cos{display:inline-flex;gap:6px;flex:none}
 .line.replaced .what .nm,.line.replaced .what .no,.line.replaced .price>span{text-decoration:line-through;color:var(--muted)}
 .line.locked.replaced .box svg{opacity:0}
@@ -298,12 +298,13 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
   const LINES=[
     {id:"maintenance",name:"Heritage AI app maintenance, with security",sub:"Uptime, bug fixes, hosting, security patching. What the signed order form converts to.",locked:true,def:true,fee:35417,yearly:425000,status:"Signed"},
     {id:"dpe",name:"Dedicated Private Environment",sub:"Heritage's own cloud project with private AI. Billed under its own order form.",locked:true,def:true,fee:7790,yearly:93485,status:"Out for signature",parent:"maintenance"},
-    {id:"web-ai",name:"Heritage AI website, Content and Website Manager",sub:"Website and content under the signed order form. The Growth Pod replaces it when selected.",locked:true,def:true,fee:1500,status:"Signed",co:"ai",replacedBy:"growth"},
-    {id:"web-hs",name:"Heritage Strategies website, Content and Website Manager",sub:"Website and content under the signed order form. The Growth Pod replaces it when selected.",locked:true,def:true,fee:500,status:"Signed",co:"strategies",replacedBy:"growth"},
+    {id:"web-ai",name:"Heritage AI website, Content and Website Manager",sub:"Website and content under the signed order form. The Growth Pod replaces it when selected.",locked:true,def:true,fee:1500,status:"Signed",co:"ai",replacedBy:"growth-ai"},
+    {id:"web-hs",name:"Heritage Strategies website, Content and Website Manager",sub:"Website and content under the signed order form. The Growth Pod replaces it when selected.",locked:true,def:true,fee:500,status:"Signed",co:"strategies",replacedBy:"growth-hs"},
     {id:"development",name:"Heritage AI additional feature requests",sub:"Continuous roadmap build against quarterly milestones. New features for advisors and clients.",def:false,fee:60000,editable:true,status:"New",note:"At $60,000 per month this is the same bucket of energy as the Advanced tier of the signed order form: about three new features a month, on top of maintenance."},
     {id:"helpdesk",name:"Help Desk, AI Employee",sub:"AI-first support for Heritage users by phone, email and chat, 24/7, with human escalation.",def:false,fee:7000,status:"Order form sent"},
     {id:"foreman",name:"Foreman, AI project manager",sub:"Runs the engagement workflow and chases missing client documents for Heritage Strategies.",def:false,fee:6000,status:"Order form sent",co:"strategies"},
-    {id:"growth",name:"Sales and marketing advisory, Growth Pod",sub:"Websites, content, brand videos and go-to-market advice. Or hire this in-house.",subs:{ai:"Website, content, brand videos and go-to-market advice. Or hire this in-house.",strategies:"Website."},def:false,fee:3042,yearly:36500,status:"Order forms signed",split:{strategies:500}}
+    {id:"growth-ai",no:"8.1",team:"growth",share:2542/3042,name:"Sales and marketing advisory, Growth Pod",sub:"Website, content, brand videos and go-to-market advice. Or hire this in-house.",def:false,fee:2542,yearly:30500,status:"Order forms signed",co:"ai"},
+    {id:"growth-hs",no:"8.2",team:"growth",share:500/3042,name:"Sales and marketing advisory, Growth Pod",sub:"Website.",def:false,fee:500,yearly:6000,status:"Order forms signed",co:"strategies"}
   ];
   const ITEMS=[{"n":"1","t":"Flow Diagram Automation: new creation process (as well as record duplication for flow diagram)","c":2,"p":2,"s":"Done","m":"2026-04","k":"c","g":false},{"n":"2","t":"Estate Distribution Chart: auto-creation from book data","c":1,"p":1,"s":"In Rework","m":"2026-04","k":"c","g":false},{"n":"3","t":"Insurance Sheet: formatting flexibility & survivorship support (incl. #47)","c":1,"p":4,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"4","t":"Vault document rotation: correct sideways / upside-down PDFs","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"5","t":"Large Document Handling: AI retrieval & readability improvements","c":4,"p":4,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"6","t":"Record Deduplication: platform updates existing entries, no duplicates (all sheets except flow chart)","c":1,"p":1,"s":"Done","m":"2026-04","k":"c","g":false},{"n":"7","t":"Legal-Landscape PDF page on book print","c":2,"p":2,"s":"In Review","m":"2026-09","k":"c","g":false},{"n":"8","t":"Insurance & Asset Sheet AI auto-notes (Comdex, face amounts, owner/beneficiary, conversion dates, cash value)","c":1,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"9","t":"Presentation highlight & marker feature for section review","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"10","t":"Slideshow transition mode: reveal one line item at a time","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"11","t":"Business document build-out: LLC Agreement Summary template","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"12","t":"Vault File Auto-Labelling: correct labelling on upload (part 1 completed)","c":4,"p":2,"s":"Done","m":"2026-05","k":"c","g":false},{"n":"12","t":"Vault File Auto-Labelling: correct labelling on upload (part 2)","c":null,"p":2,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"13","t":"Medical section: auto-detect children under 18","c":1,"p":1,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"14","t":"Engagement end date / client status category","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"15","t":"Alphabetical sorting in eval document selection (cross-page)","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"16","t":"Cross-page search in eval document selection","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"17","t":"DOB input for insurance calculations (datasheet \u2192 manual fallback)","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"18","t":"Sheet-level status indicators","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"19","t":"Per-user favourites and bookmarks on clients","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"20","t":"API Layer: endpoints, auth, rate limiting & documentation","c":4,"p":4,"s":"Done","m":"2026-07","k":"c","g":false},{"n":"21","t":"Multi-Tenant Architecture: DB schema, RBAC & firm isolation","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"22","t":"UX Research & Design: Part 1 \u2014 interviews, personas & journey mapping","c":4,"p":2,"s":"Done","m":"2026-07","k":"c","g":false},{"n":"22","t":"UX Research & Design: Part 2 \u2014 wireframes & usability testing","c":null,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"23","t":"Document Management: inventory, labelling & storage","c":2,"p":2,"s":"Done","m":"2026-06","k":"c","g":false},{"n":"24","t":"Document Management: versioning, change detection & auto re-eval","c":2,"p":2,"s":"In Progress","m":"2026-09","k":"c","g":false},{"n":"25","t":"Evaluation Engine: question set builder & templates","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"26","t":"Evaluation Engine: runner, results queue & QA dashboard","c":4,"p":4,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"27","t":"Book Generation: engine & structured data collection","c":2,"p":2,"s":"In Review","m":"2026-10","k":"c","g":false},{"n":"28","t":"Book Generation: year-over-year analysis & bulk reports (EOY 2027)","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"29","t":"Flow Diagram & Estate Distribution: orchestration, record matching & tax","c":4,"p":4,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"30","t":"Document Viewer: source PDF with bounding-box highlighting","c":2,"p":2,"s":"Done","m":"2026-09","k":"c","g":false},{"n":"31","t":"Document Viewer: click-through navigation & mobile-responsive viewing","c":2,"p":2,"s":"Done","m":"2026-10","k":"c","g":false},{"n":"32","t":"LLC Manager: batch pipeline, entity extraction & summary UI","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"33","t":"Notifications: automated alerts, missing documents & renewal reminders","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"34","t":"Notifications: customer engagement analytics for firms","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"35","t":"Secure Book User access to Heritage AI App (client-facing)","c":4,"p":4,"s":"In Review","m":"2026-08","k":"c","g":false},{"n":"36","t":"Version Control: history, draft/published states & domain control","c":4,"p":4,"s":"In Rework","m":"2026-07","k":"c","g":false},{"n":"37","t":"Version Control: granular user-level visibility controls","c":2,"p":2,"s":"In Rework","m":"2026-07","k":"c","g":false},{"n":"38","t":"Admin: firm licensing & billing management","c":2,"p":2,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"39","t":"Admin: usage analytics, reporting & accuracy dashboard","c":2,"p":2,"s":"In Progress","m":"2026-06","k":"c","g":false},{"n":"40","t":"Admin: support ticket system & revenue reporting","c":2,"p":2,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"41","t":"Salesforce Integration: bidirectional sync, API layer & Ridgeback compat (low prio until customers ask for it)","c":4,"p":4,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"42","t":"Pilot Programme: firm onboarding, success tracking & rollout prep","c":2,"p":4,"s":"In Progress","m":"2026-09","k":"c","g":false},{"n":"43","t":"AI Intelligence \u2014 Natural language search across all customer data","c":2,"p":2,"s":"In Review","m":"2026-06","k":"c","g":false},{"n":"44","t":"AI Intelligence: insight cards & expiring document alert system","c":2,"p":2,"s":"Planned","m":"Unplanned","k":"c","g":false},{"n":"45","t":"Client Data Room: document upload without book impact","c":2,"p":2,"s":"Done","m":"2026-08","k":"c","g":false},{"n":"46","t":"Insurance: Premium-Paid-to-Year backend calculation","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"47","t":"Survivorship policy support (merged into #3)","c":2,"p":0,"s":"Planned","m":"2026-11","k":"c","g":false},{"n":"48","t":"Auto-convert uploaded files to PDF","c":1,"p":1,"s":"In Review","m":"2027-01","k":"c","g":false},{"n":"49","t":"Automated pipeline for ingesting Heritage Books PDFs into the vault, eliminating manual processing","c":null,"p":2,"s":"Done","m":"2026-05","k":"a","g":false},{"n":"50","t":"Authentication emails (signup, password reset, etc.) with Heritage branding","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"51","t":"Automated Hand-Off Book Creation","c":null,"p":1,"s":"In Progress","m":"2026-09","k":"a","g":false},{"n":"53","t":"Disclosure integration: login page, monthly click-to-agree, PDF export and consent history","c":null,"p":1,"s":"Done","m":"2026-08","k":"a","g":false},{"n":"54","t":"Dummy Data Demo Heritage Vault","c":null,"p":2,"s":"Planned","m":"2026-10","k":"a","g":false},{"n":"55","t":"In-app LLM chat: ChatGPT-style interface with model picker inside Heritage Vault","c":null,"p":4,"s":"In Review","m":"2026-09","k":"a","g":false},{"n":"57","t":"Partner API: partner firms pull book data into their own systems (low prio until customers ask for it) [6 Points]","c":null,"p":8,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"58","t":"Sub-Assets [not confirmed]","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"59","t":"Sales and Planning Recommendations","c":null,"p":4,"s":"In Review","m":"2026-10","k":"a","g":false},{"n":"60","t":"Platform & PDF Branding Whitelabel","c":null,"p":2,"s":"Planned","m":"2026-10","k":"a","g":false},{"n":"61","t":"Sibling asset sharing: copy assets across sibling profiles for family clients","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"62","t":"Spell check across all sheets","c":null,"p":null,"s":"Done","m":"2026-09","k":"a","g":true},{"n":"63","t":"Asset Sheet Improvements [not confirmed]","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"64","t":"Change attribution: cross-sheet visibility, comments and owner notification","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"65","t":"UI and UX research with Heritage's own clients","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"66","t":"Utility Patents","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"67","t":"Mobile App on phone (ios or android)","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"68","t":"Children's doctors on the data sheet","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"69","t":"Settings page to improve UX","c":null,"p":null,"s":"Done","m":"2026-09","k":"a","g":true},{"n":"70","t":"Client Intake Questions Project","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"71","t":"Integrations to key industry partners (one by one)","c":null,"p":null,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"72","t":"Source document indicator on sheet cells, and a lasting highlight when you jump to a source","c":null,"p":2,"s":"Idea","m":"Ideas","k":"a","g":false},{"n":"73","t":"Tell clients which uploaded documents the AI did not use","c":null,"p":1,"s":"Idea","m":"Ideas","k":"a","g":false}];
 
@@ -317,13 +318,14 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
   const feeOf=l=>!l.split||view==="all"?l.fee:view==="strategies"?l.split.strategies:l.fee-l.split.strategies;
   const yearOf=l=>{ const y=l.yearly||l.fee*12; return !l.split||view==="all"?y:view==="strategies"?l.split.strategies*12:y-l.split.strategies*12; };
   const subOf=l=>(l.subs&&l.subs[view])||l.sub;
-  const fteIn=l=>fteOf(l.id)*feeOf(l)/l.fee;
-  for(const l of LINES){ sel[l.id]=l.def; l.fee0=l.fee; }
+  const tk=l=>l.team||l.id;
+  const fteIn=l=>fteOf(tk(l))*(l.share||1);
+  { let k=0; for(const l of LINES){ sel[l.id]=l.def; l.fee0=l.fee; if(!l.no) l.no=String(++k); } }
   /* a signed line that a subscription replaces drops out (struck through) while that subscription is ticked */
   const replaced=l=>!!(l.replacedBy&&sel[l.replacedBy]);
   const active=l=>!!sel[l.id]&&!replaced(l);
   const cosOf=l=>l.split?(view==="all"?["ai","strategies"]:[view]):[l.co||"ai"];
-  const CO={ai:["HAI","Heritage AI"],strategies:["HS","Heritage Strategies"]};
+  const CO={ai:["Heritage AI","Heritage AI"],strategies:["Heritage Strategies","Heritage Strategies"]};
   function load(){
     try{ const s=JSON.parse(localStorage.getItem("hof-state-v4")||"null"); if(s&&s.sel) for(const l of LINES) if(!l.locked&&typeof s.sel[l.id]==="boolean") sel[l.id]=s.sel[l.id]; if(s&&["all","ai","strategies"].includes(s.view)) view=s.view;
       if(s&&s.fees) for(const l of LINES) if(l.editable&&Number.isFinite(s.fees[l.id])&&s.fees[l.id]>=0) l.fee=s.fees[l.id]; }catch(_){}
@@ -346,7 +348,7 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
       const box=document.createElement("button"); box.type="button"; box.className="box"; box.innerHTML=CHECK; box.setAttribute("aria-label",(l.locked?"Included: ":"Include ")+l.name); box.disabled=!!l.locked;
       box.addEventListener("click",()=>{ sel[l.id]=!sel[l.id]; paint(); persist(); track("select",{line:l.id,on:sel[l.id]}); });
       const what=document.createElement("div"); what.className="what";
-      const b=document.createElement("b"); const no=document.createElement("span"); no.className="no"; no.textContent=(idx+1)+"."; const nm=document.createElement("span"); nm.className="nm"; nm.textContent=l.name; b.append(no,nm);
+      const b=document.createElement("b"); const no=document.createElement("span"); no.className="no"; no.textContent=l.no+"."; const nm=document.createElement("span"); nm.className="nm"; nm.textContent=l.name; b.append(no,nm);
       { const cs=document.createElement("span"); cs.className="cos"; cs.id="cos-"+l.id; b.appendChild(cs); }
       if(l.note){ const ib=document.createElement("button"); ib.type="button"; ib.className="ibtn"; ib.id="note-"+l.id; ib.setAttribute("aria-label","About "+l.name); ib.setAttribute("aria-expanded","false"); ib.innerHTML='<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="2.6" r="1.1" fill="currentColor"/><rect x="5.1" y="4.8" width="1.8" height="5" rx=".9" fill="currentColor"/></svg>';
         const np=document.createElement("div"); np.className="pop notepop"; np.hidden=true; np.id="notepop-"+l.id;
@@ -365,7 +367,7 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
       const pop=document.createElement("div"); pop.className="pop"; pop.hidden=true; pop.id="pop-"+l.id;
       info.addEventListener("click",ev=>{ ev.stopPropagation(); const open=pop.hidden; closePops(); if(open){ pop.hidden=false; info.setAttribute("aria-expanded","true"); } });
       pop.addEventListener("click",ev=>ev.stopPropagation());
-      if(FTE[l.id]) tags.appendChild(info);
+      if(FTE[tk(l)]) tags.appendChild(info);
       what.append(b,s,tags);
       const right=document.createElement("div"); right.className="right";
       const price=document.createElement("div"); price.className="price"; price.id="price-"+l.id;
@@ -400,8 +402,8 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
       const tb=document.createElement("table");
       const hr=document.createElement("tr"); hr.className="hd"; for(const txt of ["Role","Share of a full-time person"]){ const th=document.createElement("td"); th.className=txt==="Role"?"":"r"; th.textContent=txt; hr.appendChild(th); } tb.appendChild(hr);
       const pct5=f=>f<=0?0:Math.max(5,Math.round(f*20)*5);
-      for(const [pid,f] of Object.entries(FTE[l.id]||{})){ const tr=document.createElement("tr"); const a=document.createElement("td"); a.textContent=ROLES[pid]; const b=document.createElement("td"); b.className="r"; const q=pct5(f); b.textContent=q+"%"; tr.append(a,b); tb.appendChild(tr); }
-      const tr=document.createElement("tr"); const a=document.createElement("td"); a.textContent="Total"; const b=document.createElement("td"); b.className="r"; b.textContent=fteOf(l.id).toFixed(1)+" full-time people"; tr.append(a,b); tb.appendChild(tr);
+      for(const [pid,f] of Object.entries(FTE[tk(l)]||{})){ const tr=document.createElement("tr"); const a=document.createElement("td"); a.textContent=ROLES[pid]; const b=document.createElement("td"); b.className="r"; const q=pct5(f); b.textContent=q+"%"; tr.append(a,b); tb.appendChild(tr); }
+      const tr=document.createElement("tr"); const a=document.createElement("td"); a.textContent="Total"; const b=document.createElement("td"); b.className="r"; b.textContent=fteOf(tk(l)).toFixed(1)+" full-time people"; tr.append(a,b); tb.appendChild(tr);
       pop.appendChild(tb); }
       if(on&&inView(l)){ month+=p; fte+=fteIn(l); }
     }
@@ -550,11 +552,11 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
     const on=LINES.filter(l=>active(l)&&inView(l));
     for(const l of on){
       const nameW=CW-70;
-      const nl=wrap((LINES.indexOf(l)+1)+". "+l.name,nameW,11.5); txt(nl,M,y,{size:11.5,bold:true});
+      const nl=wrap(l.no+". "+l.name,nameW,11.5); txt(nl,M,y,{size:11.5,bold:true});
       txt(money(feeOf(l)),W-M-32,y,{size:11.5,bold:true,align:"right"}); txt(money(yearOf(l)),W-M,y,{size:10.5,color:MUTED,align:"right"});
       y+=nl.length*5.2;
       const sl=wrap(subOf(l),nameW,9.5); txt(sl,M,y,{size:9.5,color:MUTED}); y+=sl.length*4.3;
-      txt((l.locked?"Always included":"Selected")+"  ·  "+l.status+(FTE[l.id]?"  ·  "+fteIn(l).toFixed(1)+" full-time people":""),M,y,{size:8.5,color:ACC}); y+=4;
+      txt((l.locked?"Always included":"Selected")+"  ·  "+l.status+(FTE[tk(l)]?"  ·  "+fteIn(l).toFixed(1)+" full-time people":""),M,y,{size:8.5,color:ACC}); y+=4;
       doc.setDrawColor(...LINE); doc.line(M,y,W-M,y); y+=6.5;
     }
     /* totals */
@@ -570,7 +572,7 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
     const notOn=LINES.filter(l=>!sel[l.id]);
     const repl=LINES.filter(l=>sel[l.id]&&replaced(l)&&inView(l));
     if(repl.length){ txt("Replaced by the Growth Pod: "+repl.map(l=>l.name).join(", ")+".",M,y,{size:9,color:MUTED}); y+=6; }
-    if(notOn.length){ txt("Not selected: "+notOn.map(l=>l.name).join(", ")+".",M,y,{size:9,color:MUTED}); y+=6; }
+    if(notOn.length){ txt("Not selected: "+[...new Set(notOn.map(l=>l.name))].join(", ")+".",M,y,{size:9,color:MUTED}); y+=6; }
     /* footer */
     const fy=279.4-M+2;
     doc.setDrawColor(...LINE); doc.line(M,fy-6,W-M,fy-6);

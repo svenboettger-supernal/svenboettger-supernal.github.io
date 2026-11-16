@@ -64,6 +64,16 @@ header .lead p{font-size:16px}
 .what{min-width:0;display:grid;gap:3px}
 .what b{font-weight:600;font-size:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .what .no{color:var(--muted);font-weight:500;font-variant-numeric:tabular-nums;flex:none}
+.co{display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:600;letter-spacing:.05em;flex:none}
+.co.ai{background:var(--accent);color:var(--accent-ink)}
+.co.strategies{background:var(--warn-soft);color:var(--warn)}
+.cos{display:inline-flex;gap:6px;flex:none}
+.line.replaced .what .nm,.line.replaced .what .no,.line.replaced .price>span{text-decoration:line-through;color:var(--muted)}
+.line.locked.replaced .box svg{opacity:0}
+.fee-in{font:inherit;font-weight:600;font-size:17px;font-variant-numeric:tabular-nums;color:var(--ink);text-align:right;width:8.5ch;padding:1px 4px;margin-right:-5px;border:1px dashed var(--line-strong);border-radius:4px;background:var(--bg)}
+.fee-in:hover{border-color:var(--accent)}
+.fee-in:focus-visible{outline:2px solid var(--accent);outline-offset:1px;border-style:solid}
+@media print{.fee-in{border-color:transparent;background:transparent}}
 .ibtn{width:18px;height:18px;border-radius:50%;border:0;background:var(--accent-soft);color:var(--accent);cursor:pointer;padding:0;display:inline-grid;place-items:center;flex:none}
 .ibtn svg{width:11px;height:11px;display:block}
 .ibtn:hover,.ibtn[aria-expanded="true"]{background:var(--accent);color:var(--accent-ink)}
@@ -288,7 +298,9 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
   const LINES=[
     {id:"maintenance",name:"Heritage AI app maintenance, with security",sub:"Uptime, bug fixes, hosting, security patching. What the signed order form converts to.",locked:true,def:true,fee:35417,yearly:425000,status:"Signed"},
     {id:"dpe",name:"Dedicated Private Environment",sub:"Heritage's own cloud project with private AI. Billed under its own order form.",locked:true,def:true,fee:7790,yearly:93485,status:"Out for signature",parent:"maintenance"},
-    {id:"development",name:"Heritage AI additional feature requests",sub:"Continuous roadmap build against quarterly milestones. New features for advisors and clients.",def:false,fee:60000,status:"New",note:"At $60,000 per month this is the same bucket of energy as the Advanced tier of the signed order form: about three new features a month, on top of maintenance."},
+    {id:"web-ai",name:"Heritage AI website, Content and Website Manager",sub:"Website and content under the signed order form. The Growth Pod replaces it when selected.",locked:true,def:true,fee:1500,status:"Signed",co:"ai",replacedBy:"growth"},
+    {id:"web-hs",name:"Heritage Strategies website, Content and Website Manager",sub:"Website and content under the signed order form. The Growth Pod replaces it when selected.",locked:true,def:true,fee:500,status:"Signed",co:"strategies",replacedBy:"growth"},
+    {id:"development",name:"Heritage AI additional feature requests",sub:"Continuous roadmap build against quarterly milestones. New features for advisors and clients.",def:false,fee:60000,editable:true,status:"New",note:"At $60,000 per month this is the same bucket of energy as the Advanced tier of the signed order form: about three new features a month, on top of maintenance."},
     {id:"helpdesk",name:"Help Desk, AI Employee",sub:"AI-first support for Heritage users by phone, email and chat, 24/7, with human escalation.",def:false,fee:7000,status:"Order form sent"},
     {id:"foreman",name:"Foreman, AI project manager",sub:"Runs the engagement workflow and chases missing client documents for Heritage Strategies.",def:false,fee:6000,status:"Order form sent",co:"strategies"},
     {id:"growth",name:"Sales and marketing advisory, Growth Pod",sub:"Websites, content, brand videos and go-to-market advice. Or hire this in-house.",subs:{ai:"Website, content, brand videos and go-to-market advice. Or hire this in-house.",strategies:"Website."},def:false,fee:3042,yearly:36500,status:"Order forms signed",split:{strategies:500}}
@@ -306,14 +318,20 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
   const yearOf=l=>{ const y=l.yearly||l.fee*12; return !l.split||view==="all"?y:view==="strategies"?l.split.strategies*12:y-l.split.strategies*12; };
   const subOf=l=>(l.subs&&l.subs[view])||l.sub;
   const fteIn=l=>fteOf(l.id)*feeOf(l)/l.fee;
-  for(const l of LINES) sel[l.id]=l.def;
+  for(const l of LINES){ sel[l.id]=l.def; l.fee0=l.fee; }
+  /* a signed line that a subscription replaces drops out (struck through) while that subscription is ticked */
+  const replaced=l=>!!(l.replacedBy&&sel[l.replacedBy]);
+  const active=l=>!!sel[l.id]&&!replaced(l);
+  const cosOf=l=>l.split?(view==="all"?["ai","strategies"]:[view]):[l.co||"ai"];
+  const CO={ai:["HAI","Heritage AI"],strategies:["HS","Heritage Strategies"]};
   function load(){
-    try{ const s=JSON.parse(localStorage.getItem("hof-state-v4")||"null"); if(s&&s.sel) for(const l of LINES) if(!l.locked&&typeof s.sel[l.id]==="boolean") sel[l.id]=s.sel[l.id]; if(s&&["all","ai","strategies"].includes(s.view)) view=s.view; }catch(_){}
+    try{ const s=JSON.parse(localStorage.getItem("hof-state-v4")||"null"); if(s&&s.sel) for(const l of LINES) if(!l.locked&&typeof s.sel[l.id]==="boolean") sel[l.id]=s.sel[l.id]; if(s&&["all","ai","strategies"].includes(s.view)) view=s.view;
+      if(s&&s.fees) for(const l of LINES) if(l.editable&&Number.isFinite(s.fees[l.id])&&s.fees[l.id]>=0) l.fee=s.fees[l.id]; }catch(_){}
     /* a shared link never carries a selection: strip any old hash so every first open starts with the locked lines only */
     if(location.hash){ try{ history.replaceState(null,"",location.pathname+location.search); }catch(_){} }
   }
   function persist(){
-    try{ localStorage.setItem("hof-state-v4",JSON.stringify({sel,view})); }catch(_){}
+    try{ localStorage.setItem("hof-state-v4",JSON.stringify({sel,view,fees:Object.fromEntries(LINES.filter(l=>l.editable).map(l=>[l.id,l.fee]))})); }catch(_){}
   }
 
 
@@ -328,11 +346,12 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
       const box=document.createElement("button"); box.type="button"; box.className="box"; box.innerHTML=CHECK; box.setAttribute("aria-label",(l.locked?"Included: ":"Include ")+l.name); box.disabled=!!l.locked;
       box.addEventListener("click",()=>{ sel[l.id]=!sel[l.id]; paint(); persist(); track("select",{line:l.id,on:sel[l.id]}); });
       const what=document.createElement("div"); what.className="what";
-      const b=document.createElement("b"); const no=document.createElement("span"); no.className="no"; no.textContent=(idx+1)+"."; b.append(no,document.createTextNode(l.name));
+      const b=document.createElement("b"); const no=document.createElement("span"); no.className="no"; no.textContent=(idx+1)+"."; const nm=document.createElement("span"); nm.className="nm"; nm.textContent=l.name; b.append(no,nm);
+      { const cs=document.createElement("span"); cs.className="cos"; cs.id="cos-"+l.id; b.appendChild(cs); }
       if(l.note){ const ib=document.createElement("button"); ib.type="button"; ib.className="ibtn"; ib.id="note-"+l.id; ib.setAttribute("aria-label","About "+l.name); ib.setAttribute("aria-expanded","false"); ib.innerHTML='<svg viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="2.6" r="1.1" fill="currentColor"/><rect x="5.1" y="4.8" width="1.8" height="5" rx=".9" fill="currentColor"/></svg>';
         const np=document.createElement("div"); np.className="pop notepop"; np.hidden=true; np.id="notepop-"+l.id;
         ib.addEventListener("click",ev=>{ ev.stopPropagation(); const open=np.hidden; closePops(); if(open){ np.innerHTML=""; const d=document.createElement("div"); d.textContent=l.note; np.appendChild(d); np.hidden=false; ib.setAttribute("aria-expanded","true"); } });
-        np.addEventListener("click",ev=>ev.stopPropagation()); const wrap=document.createElement("span"); wrap.className="ibwrap"; wrap.append(ib,np); b.appendChild(wrap); }
+        np.addEventListener("click",ev=>ev.stopPropagation()); const wrap=document.createElement("span"); wrap.className="ibwrap"; wrap.id="notewrap-"+l.id; wrap.append(ib,np); b.appendChild(wrap); }
       const s=document.createElement("small"); s.id="sub-"+l.id; s.textContent=l.sub;
       const tags=document.createElement("div"); tags.className="tags";
       const I_LOCK='<svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5" fill="currentColor"/><path d="M5 7V5a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>';
@@ -346,7 +365,7 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
       const pop=document.createElement("div"); pop.className="pop"; pop.hidden=true; pop.id="pop-"+l.id;
       info.addEventListener("click",ev=>{ ev.stopPropagation(); const open=pop.hidden; closePops(); if(open){ pop.hidden=false; info.setAttribute("aria-expanded","true"); } });
       pop.addEventListener("click",ev=>ev.stopPropagation());
-      tags.appendChild(info);
+      if(FTE[l.id]) tags.appendChild(info);
       what.append(b,s,tags);
       const right=document.createElement("div"); right.className="right";
       const price=document.createElement("div"); price.className="price"; price.id="price-"+l.id;
@@ -361,10 +380,18 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
   function paintLines(){
     let month=0, fte=0;
     for(const l of LINES){
-      const on=!!sel[l.id]; const row=$("line-"+l.id);
-      row.classList.toggle("on",on); row.classList.toggle("off",!on); row.hidden=!inView(l); $("sub-"+l.id).textContent=subOf(l);
+      const on=active(l); const row=$("line-"+l.id);
+      row.classList.toggle("on",on); row.classList.toggle("off",!on); row.classList.toggle("replaced",replaced(l)); row.hidden=!inView(l); $("sub-"+l.id).textContent=subOf(l);
+      { const cs=$("cos-"+l.id); cs.innerHTML=""; for(const c of cosOf(l)){ const t=document.createElement("span"); t.className="co "+c; t.textContent=CO[c][0]; t.title=CO[c][1]; cs.appendChild(t); } }
+      { const nw=$("notewrap-"+l.id); if(nw) nw.hidden=l.fee!==l.fee0; }
       const p=feeOf(l);
-      $("price-"+l.id).innerHTML=""; const pv=document.createElement("span"); pv.textContent=money(p); $("price-"+l.id).appendChild(pv);
+      $("price-"+l.id).innerHTML="";
+      if(l.editable){ const inp=document.createElement("input"); inp.type="text"; inp.inputMode="numeric"; inp.className="fee-in"; inp.value=money(p); inp.setAttribute("aria-label","Fee per month for "+l.name);
+        inp.addEventListener("focus",()=>inp.select());
+        inp.addEventListener("keydown",ev=>{ if(ev.key==="Enter") inp.blur(); });
+        inp.addEventListener("change",()=>{ const n=parseInt(inp.value.replace(/[^0-9]/g,""),10); if(Number.isFinite(n)){ l.fee=n; persist(); track("fee",{line:l.id,fee:n}); } paint(); });
+        $("price-"+l.id).appendChild(inp); }
+      else { const pv=document.createElement("span"); pv.textContent=money(p); $("price-"+l.id).appendChild(pv); }
       { const sm=document.createElement("small"); sm.textContent=money(yearOf(l))+" per year"; $("price-"+l.id).appendChild(sm); }
       /* popover */
       const pop=$("pop-"+l.id); pop.innerHTML="";
@@ -380,7 +407,7 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
     }
     const people=Math.ceil(fte-1e-9); TOT={month,year:month*12,people};
     $("t-month").textContent=money(month); $("t-year").textContent=money(month*12)+" per year";
-    { const base=LINES.filter(l=>l.locked&&inView(l)); const by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
+    { const base=LINES.filter(l=>(l.id==="maintenance"||l.id==="dpe")&&inView(l)); const by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
       $("t-people").textContent=base.length?"Maintenance and DPE: "+money(by)+" per year":""; }
     document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.view===view)));
     document.querySelector("section.book").hidden=view==="strategies";
@@ -489,7 +516,7 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
   const cap=name=>(window.claude&&typeof window.claude.use==="function")?window.claude.use(name).catch(()=>null):Promise.resolve(null);
   const uidP=cap("user").then(u=>u?u.id():null).catch(()=>null);
   const sid=(()=>{ try{ let v=localStorage.getItem("hof-sid"); if(!v){ v=Math.random().toString(36).slice(2,10)+Date.now().toString(36); localStorage.setItem("hof-sid",v); } return v; }catch(_){ return "s"+Date.now().toString(36); } })();
-  const selected=()=>LINES.filter(l=>sel[l.id]).map(l=>l.id);
+  const selected=()=>LINES.filter(active).map(l=>l.id);
   let IGNORE=false;
   try{ const h=(location.hash||"").toLowerCase(); if(h==="#ignore"){ localStorage.setItem("hof-ignore","1"); } else if(h==="#track"){ localStorage.removeItem("hof-ignore"); } IGNORE=localStorage.getItem("hof-ignore")==="1"; }catch(_){}
   async function track(ev,extra){
@@ -504,7 +531,7 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
   }
 
   /* ---------- proposal PDF: only the lines ticked ---------- */
-  const refCode=()=>{ const bits=LINES.map(l=>sel[l.id]?"1":"0").join(""); return "HP-"+parseInt(bits,2).toString(36).toUpperCase()+"-"+Date.now().toString(36).toUpperCase().slice(-5); };
+  const refCode=()=>{ const bits=LINES.map(l=>active(l)?"1":"0").join(""); return "HP-"+parseInt(bits,2).toString(36).toUpperCase()+"-"+Date.now().toString(36).toUpperCase().slice(-5); };
   function buildPdf(ref){
     const J=window.jspdf&&window.jspdf.jsPDF; if(!J) return null;
     const doc=new J({unit:"mm",format:"letter"}); const W=215.9, M=18, CW=W-2*M; let y=M;
@@ -520,14 +547,14 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
     doc.setDrawColor(...INK); doc.setLineWidth(.5); doc.line(M,y,W-M,y); y+=5.5;
     txt("LINE",M,y,{size:8,bold:true,color:MUTED}); txt("FEE PER MONTH",W-M-32,y,{size:8,bold:true,color:MUTED,align:"right"}); txt("PER YEAR",W-M,y,{size:8,bold:true,color:MUTED,align:"right"}); y+=3;
     doc.setDrawColor(...LINE); doc.setLineWidth(.3); doc.line(M,y,W-M,y); y+=6.5;
-    const on=LINES.filter(l=>sel[l.id]&&inView(l));
+    const on=LINES.filter(l=>active(l)&&inView(l));
     for(const l of on){
       const nameW=CW-70;
       const nl=wrap((LINES.indexOf(l)+1)+". "+l.name,nameW,11.5); txt(nl,M,y,{size:11.5,bold:true});
       txt(money(feeOf(l)),W-M-32,y,{size:11.5,bold:true,align:"right"}); txt(money(yearOf(l)),W-M,y,{size:10.5,color:MUTED,align:"right"});
       y+=nl.length*5.2;
       const sl=wrap(subOf(l),nameW,9.5); txt(sl,M,y,{size:9.5,color:MUTED}); y+=sl.length*4.3;
-      txt((l.locked?"Always included":"Selected")+"  ·  "+l.status+"  ·  "+fteIn(l).toFixed(1)+" full-time people",M,y,{size:8.5,color:ACC}); y+=4;
+      txt((l.locked?"Always included":"Selected")+"  ·  "+l.status+(FTE[l.id]?"  ·  "+fteIn(l).toFixed(1)+" full-time people":""),M,y,{size:8.5,color:ACC}); y+=4;
       doc.setDrawColor(...LINE); doc.line(M,y,W-M,y); y+=6.5;
     }
     /* totals */
@@ -535,12 +562,14 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
     txt("TOTAL PER MONTH",M+6,y+8,{size:8,bold:true,color:MUTED});
     txt(money(TOT.month),W-M-6,y+13,{size:20,bold:true,align:"right"});
     txt(money(TOT.year)+" per year",W-M-6,y+20,{size:10.5,color:MUTED,align:"right"});
-    { const base=LINES.filter(l=>l.locked&&inView(l)); const by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
+    { const base=LINES.filter(l=>(l.id==="maintenance"||l.id==="dpe")&&inView(l)); const by=base.reduce((a,l)=>a+(l.yearly||l.fee*12),0);
       if(base.length){ txt("Maintenance and DPE: "+money(by)+" per year",W-M-6,y+25.5,{size:10.5,color:MUTED,align:"right"});
         txt("Maintenance and the Dedicated Private Environment are always included.",M+6,y+14,{size:9,color:MUTED}); } }
     txt("Fees are per month, billed monthly, from January 2027.",M+6,y+19,{size:9,color:MUTED});
     y+=38;
     const notOn=LINES.filter(l=>!sel[l.id]);
+    const repl=LINES.filter(l=>sel[l.id]&&replaced(l)&&inView(l));
+    if(repl.length){ txt("Replaced by the Growth Pod: "+repl.map(l=>l.name).join(", ")+".",M,y,{size:9,color:MUTED}); y+=6; }
     if(notOn.length){ txt("Not selected: "+notOn.map(l=>l.name).join(", ")+".",M,y,{size:9,color:MUTED}); y+=6; }
     /* footer */
     const fy=279.4-M+2;

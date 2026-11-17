@@ -297,7 +297,7 @@ details.grp li .ref{color:var(--muted);display:inline-block;min-width:34px;margi
   /* fee: monthly fee. yearly: the figure on the order form where one exists, otherwise fee × 12. */
   const LINES=[
     {id:"maintenance",name:"Heritage AI app maintenance, with security",sub:"Uptime, bug fixes, hosting, security patching. What the signed order form converts to.",locked:true,def:true,fee:35417,yearly:425000,status:"Signed"},
-    {id:"dpe",name:"Dedicated Private Environment",sub:"Heritage's own cloud project with private AI. Billed under its own order form.",locked:true,def:true,fee:7790,yearly:93485,status:"Out for signature",parent:"maintenance"},
+    {id:"dpe",name:"Dedicated Private Environment",sub:"Heritage's own cloud project with private AI. Billed under its own order form.",locked:true,def:true,fee:7790,yearly:93485,status:"Signed",parent:"maintenance"},
     {id:"web-ai",name:"Heritage AI website, Content and Website Manager",sub:"Website and content under the signed order form. The Growth Pod replaces it when selected.",locked:true,def:true,fee:1500,status:"Signed",co:"ai",replacedBy:"growth-ai"},
     {id:"web-hs",name:"Heritage Strategies website, Content and Website Manager",sub:"Website and content under the signed order form. The Growth Pod replaces it when selected.",locked:true,def:true,fee:500,status:"Signed",co:"strategies",replacedBy:"growth-hs"},
     {id:"development",name:"Heritage AI additional feature requests",sub:"Continuous roadmap build against quarterly milestones. New features for advisors and clients.",def:false,fee:60000,editable:true,status:"New",note:"At $60,000 per month this is the same bucket of energy as the Advanced tier of the signed order form: about three new features a month, on top of maintenance."},
